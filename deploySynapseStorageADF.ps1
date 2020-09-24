@@ -4,9 +4,10 @@
 
 #Get Urer Input
 $resourceGroupName = Read-Host "Enter Resource Group Name"
-$servername = Read-Host "Enter Server Name"
-$database = Read-Host "Enter Database Name"
-
+$servername = $resourceGroupName.ToLower()+"server"
+$database = $resourceGroupName.ToLower()+"pool"
+$adfName = $resourceGroupName.ToLower()+"adf"
+$storageName = $resourceGroupName.ToLower()+"storage"
 
 #Default variables
 $location = "westus2"
@@ -14,17 +15,14 @@ $adminlogin = $servername+"admin"
 $password = "NewPassword0~"
 # The ip address range that you want to allow to access your server - change as appropriate
 
-
-Write-Host "Server Username: $adminlogin"
-
-Function Get-resourceGroupName {
+Function Set-resourceGroupName {
 
     $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
     if ($rgInstance)
     {
         Write-Host "Resource Group Name already exists"
         $script:resourceGroupName = Read-Host "Enter Resource Group Name"
-        Get-resourceGroupName
+        Set-resourceGroupName
     }
     else 
     {
@@ -32,14 +30,14 @@ Function Get-resourceGroupName {
     }
 }
 
-Function Get-sqlServerName {
+Function Set-sqlServerName {
     
     $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
     if ($serverInstance)
     {
         Write-Host "Server Name already exists"
         $script:servername = Read-Host "Enter Server Name"
-        Get-sqlServerName
+        Set-sqlServerName
     }
     else 
     {
@@ -47,14 +45,14 @@ Function Get-sqlServerName {
     }
 }
 
-Function Get-DatabaseName {
+Function Set-DatabaseName {
      
      $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
     if ($dbInstance)
     {
         Write-Host "Server Name already exists"
         $script:database = Read-Host "Enter Database Name"
-        Get-DatabaseName
+        Set-DatabaseName
     }
     else {
         New-AzSqlDatabase -ResourceGroupName $resourcegroupname -ServerName $servername -DatabaseName $database  -Edition "DataWarehouse" -RequestedServiceObjectiveName "DW100c" -CollationName "SQL_Latin1_General_CP1_CI_AS" -MaxSizeBytes 10995116277760
@@ -71,19 +69,43 @@ Function Set-FirewallRule {
     New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName $clientIPRuleName -StartIpAddress $ipaddr -EndIpAddress $ipaddr
 }
 
+Function Set-ADFName {
+     
+    $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $adfName  -ErrorAction SilentlyContinue
+   if ($adfInstance)
+   {
+       Write-Host "ADF Name already exists"
+       $script:adfName = Read-Host "Enter ADF Name"
+       Set-ADFName
+   }
+   else {
+        Set-AzDataFactoryV2 -ResourceGroupName $resourcegroupname -Name $adfName -Location $location
+   }
+}
+
+Function Set-StorageName {
+     
+    $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageName  -ErrorAction SilentlyContinue
+   if ($storageInstance)
+   {
+       Write-Host "Storage Name already exists"
+       $script:storageName = Read-Host "Enter Storage Name"
+       Set-StorageName
+   }
+   else {
+        New-AzStorageAccount -ResourceGroupName $resourcegroupname -AccountName $storageName -Location $location -SkuName Standard_LRS -Kind StorageV2 -EnableHierarchicalNamespace $true
+   }
+}
+
+
 #Prompt for details
-Get-resourceGroupName
-Get-sqlServerName
 Get-yourPublicIP
+Set-resourceGroupName
+Set-sqlServerName
 Set-FirewallRule
-Get-DatabaseName
+Set-DatabaseName
+Set-ADFName
+Set-StorageName
 
-write-host "RG: $resourceGroupName, Server : $servername, DB : $database, ServerUserName: $adminlogin, IP address: $ipaddr" 
-
-
-<#
-
-New-AzResourceGroup -Name $resourceGroupName -Location $location
-
-#>
+write-host "RG: $resourceGroupName, Server: $servername, DB: $database, SQLServerAdminUsername: $adminlogin, ADF Name: $adfName, StorageName: $storageName, IP address: $ipaddr"
 
