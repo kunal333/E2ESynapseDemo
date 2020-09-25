@@ -1,6 +1,6 @@
-#Connect-AzAccount
-#Get-AzSubscription
-#Set-AzContext -SubscriptionName "Adam's sub"
+Connect-AzAccount
+Get-AzSubscription
+Set-AzContext -SubscriptionName "Adam's sub"
 
 #Get Urer Input
 $resourceGroupName = Read-Host "Enter Resource Group Name"
@@ -104,6 +104,7 @@ Function Set-ContainerAndSAS {
     $script:context = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageName).context
 
     New-AzStorageContainer -Context $context -Name $ContainerName -Permission Off
+    New-AzStorageContainer -Context $context -Name "staging" -Permission Off
     $StartTime = Get-Date
     $EndTime = $startTime.AddHours(10.0)
     $script:sasToken = New-AzStorageAccountSASToken -Context $context -Service Blob,File,Table,Queue -ResourceType Service,Container,Object -Permission racwdlup -StartTime $StartTime -ExpiryTime $EndTime
