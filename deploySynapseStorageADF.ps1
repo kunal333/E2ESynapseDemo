@@ -4,15 +4,18 @@
 
 #Get Urer Input
 $resourceGroupName = Read-Host "Enter Resource Group Name"
+$password = Read-Host "Enter SQL Server Password" -assecurestring
+
+#Default variables
 $servername = $resourceGroupName.ToLower()+"server"
 $database = $resourceGroupName.ToLower()+"pool"
 $adfName = $resourceGroupName.ToLower()+"adf"
 $storageName = $resourceGroupName.ToLower()+"storage"
-
-#Default variables
 $location = "westus2"
 $adminlogin = $servername+"admin"
-$password = "NewPassword0~"
+$path = Get-Location
+$ContainerName = "cms-part-d-prescriber"
+
 # The ip address range that you want to allow to access your server - change as appropriate
 
 Function Set-resourceGroupName {
@@ -65,7 +68,7 @@ function Get-yourPublicIP {
 
 Function Set-FirewallRule {
     $clientIPRuleName = "ClientIP-"+$ipaddr
-#    Write-Host "Client Ip addre rule name: $clientIPRuleName"
+
     New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName $clientIPRuleName -StartIpAddress $ipaddr -EndIpAddress $ipaddr
 }
 
@@ -97,8 +100,41 @@ Function Set-StorageName {
    }
 }
 
+Function Set-ContainerAndSAS {    
+    $script:context = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageName).context
+
+    New-AzStorageContainer -Context $context -Name $ContainerName -Permission Off
+    $StartTime = Get-Date
+    $EndTime = $startTime.AddHours(10.0)
+    $script:sasToken = New-AzStorageAccountSASToken -Context $context -Service Blob,File,Table,Queue -ResourceType Service,Container,Object -Permission racwdlup -StartTime $StartTime -ExpiryTime $EndTime
+
+}
+
+Function Get-CMSDataAndUnzip {
+    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_13.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_13.zip
+    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_14.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_14.zip
+    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_15.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_15.zip
+    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_16.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_16.zip
+    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_17.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_17.zip
+<#
+    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_13.zip" -DestinationPath $path -Verbose
+    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_14.zip" -DestinationPath $path -Verbose
+    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_15.zip" -DestinationPath $path -Verbose
+    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_16.zip" -DestinationPath $path -Verbose
+    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_17.zip" -DestinationPath $path -Verbose
+#>
+}
+
+Function Set-UploadCMSData {
+    ./azcopy copy "$path/PartD_*.txt" "https://$storageName.blob.core.windows.net/$ContainerName/$sasToken" --recursive=true
+}
+
+Function Set-CleanUp {
+
+}
 
 #Prompt for details
+
 Get-yourPublicIP
 Set-resourceGroupName
 Set-sqlServerName
@@ -106,6 +142,11 @@ Set-FirewallRule
 Set-DatabaseName
 Set-ADFName
 Set-StorageName
+Set-ContainerAndSAS
 
-write-host "RG: $resourceGroupName, Server: $servername, DB: $database, SQLServerAdminUsername: $adminlogin, ADF Name: $adfName, StorageName: $storageName, IP address: $ipaddr"
+#Get-CMSDataAndUnzip
+#Set-UploadCMSData
+Set-CleanUp
+
+write-host "RG:$resourceGroupName, Server:$servername, DB:$database, SQLServerAdminUsername:$adminlogin, ADF Name:$adfName, StorageName:$storageName, IP address:$ipaddr, Password:$password, SaSTokey:$sasToken"
 
