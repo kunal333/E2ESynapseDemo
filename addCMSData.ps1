@@ -14,15 +14,10 @@ Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_15.zip" -DestinationPa
 Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_16.zip" -DestinationPath $path -Verbose
 Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_17.zip" -DestinationPath $path -Verbose
 
-Add-Type -Assembly "System.IO.Compression.FileSystem" [System.IO.Compression.ZipFile]::ExtractToDirectory(/mnt/c/Users/kuja/source/repos/E2ESynapseDemo/E2ESynapseDemo/PartD_Prescriber_PUF_NPI_DRUG_13.zip , '/mnt/c/Users/kuja/source/repos/E2ESynapseDemo')
+Add-Type -Assembly "System.IO.Compression.FileSystem" `
+    [System.IO.Compression.ZipFile]::ExtractToDirectory(/mnt/c/Users/kuja/source/repos/E2ESynapseDemo/E2ESynapseDemo/PartD_Prescriber_PUF_NPI_DRUG_13.zip , '/mnt/c/Users/kuja/source/repos/E2ESynapseDemo')
 
 ./azcopy copy $path/PartD_Prescriber_PUF_NPI_DRUG_*.txt https://cmsdemostorage.blob.core.windows.net/cms-part-d-prescriber
-
-$shell_app = new-object -com shell.application
-$filename = "PartD_Prescriber_PUF_NPI_DRUG_13.zip"
-$zip_file = $shell_app.namespace((Get-Location).Path + "\$filename")
-$destination = $shell_app.namespace((Get-Location).Path)
-$destination.Copyhere($zip_file.items())
 
 
 $resourceGroupName = Read-Host "Enter Resource Group Name"

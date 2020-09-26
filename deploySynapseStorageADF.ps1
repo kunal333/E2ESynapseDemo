@@ -4,7 +4,7 @@ Set-AzContext -SubscriptionName "Adam's sub"
 
 #Get Urer Input
 $resourceGroupName = Read-Host "Enter Resource Group Name"
-$password = Read-Host "Enter SQL Server Password" -assecurestring
+$password = Read-Host "Enter SQL Server Password" #-assecurestring
 
 #Default variables
 $servername = $resourceGroupName.ToLower()+"server"
@@ -16,11 +16,30 @@ $adminlogin = $servername+"admin"
 $path = Get-Location
 $ContainerName = "cms-part-d-prescriber"
 
-# The ip address range that you want to allow to access your server - change as appropriate
+
+# Call Functions
+Get-yourPublicIP
+Set-resourceGroupName
+Set-sqlServerName
+Set-FirewallRule
+Set-DatabaseName
+Set-ADFName
+Set-StorageName
+Set-ContainerAndSAS
+Set-DeployADFARMTemplate
+Get-StorageKey
+Get-ConnectionString
+Set-ParametersFile
+#Get-CMSDataAndUnzip
+#Set-UploadCMSData
+#Set-CleanUp
+
+# Functions
 
 Function Set-resourceGroupName {
 
-    $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
+    $rgInstance = Get-AzResourceGroup -Name $resourceGroupName `
+        -ErrorAction SilentlyContinue
     if ($rgInstance)
     {
         Write-Host "Resource Group Name already exists"
@@ -29,7 +48,8 @@ Function Set-resourceGroupName {
     }
     else 
     {
-        New-AzResourceGroup -Name $resourceGroupName -Location $location
+        New-AzResourceGroup -Name $resourceGroupName `
+            -Location $location
     }
 }
 
@@ -134,20 +154,52 @@ Function Set-CleanUp {
 
 }
 
-#Prompt for details
+Function Set-DeployADFARMTemplate {
+    $templateFile = "$path/adf_csm_arm_template.json"
+    $parameterFile="$path/adf_csm_arm_template_parameters.json"
+    New-AzResourceGroupDeployment `
+    -Name $adfName `
+    -ResourceGroupName $resourceGroupName `
+    -TemplateFile $templateFile `
+    -TemplateParameterFile $parameterFile
+}
 
-Get-yourPublicIP
-Set-resourceGroupName
-Set-sqlServerName
-Set-FirewallRule
-Set-DatabaseName
-Set-ADFName
-Set-StorageName
-Set-ContainerAndSAS
+Function Get-StorageKey {
+    $script:storageKey1 = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageName -ListKerbKey)[0].Value
+}
 
-#Get-CMSDataAndUnzip
-#Set-UploadCMSData
-Set-CleanUp
+Function Get-ConnectionString {
+    $script:SQLPoolconnectionString = "Server=tcp:"+$servername+".database.windows.net,1433;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+}
+
+Function Set-ParametersFile {
+
+    $MyJsonVariable = @"
+{
+    "`$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "value": "$adfName"
+        },
+        "AzureDataLakeStorage1_accountKey": {
+            "value": "$storageKey1"
+        },
+        "AzureSqlDB_connectionString": {
+            "value": "$SQLPoolconnectionString"
+        },
+        "cmsdemopool_connectionString": {
+            "value": "$SQLPoolconnectionString"
+        },
+        "AzureDataLakeStorage1_properties_typeProperties_url": {
+            "value": "https://$storageName.dfs.core.windows.net/"
+        }
+    }
+}
+"@
+
+    Set-Content adf_csm_arm_template_parameters.json $MyJsonVariable
+
+}
 
 write-host "RG:$resourceGroupName, Server:$servername, DB:$database, SQLServerAdminUsername:$adminlogin, ADF Name:$adfName, StorageName:$storageName, IP address:$ipaddr, Password:$password, SaSTokey:$sasToken"
-
