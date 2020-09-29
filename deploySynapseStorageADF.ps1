@@ -78,6 +78,10 @@ Function Set-FirewallRule {
     $clientIPRuleName = "ClientIP-"+$ipaddr
 
     New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName $clientIPRuleName -StartIpAddress $ipaddr -EndIpAddress $ipaddr
+
+    $adfIP = "20.42.132.37"
+
+    New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName "ADF" -StartIpAddress $adfIP -EndIpAddress $adfIP
 }
 
 Function Set-ADFName {
@@ -186,8 +190,9 @@ Function Get-StorageKey {
 }
 
 Function Get-ConnectionString {
-    $script:SQLPoolconnectionString = "Server=tcp:"+$servername+".database.windows.net,1433;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-#    $script:SQLPoolconnectionString = "Server=$servername;Database=$database;User ID=$adminlogin;Password=$password;Timeout=60"
+    $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password="+$password+";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+#    "integrated security=False;encrypt=True;connection timeout=30;data source=cmsdemo4server.database.windows.net;initial catalog=cmsdemo4pool;user id=cmsdemo4serveradmin;server=tcp:cmsdemo4server.database.windows.net,1433;persist security info=False;multipleactiveresultsets=False;trustservercertificate=False",
+     #    $script:SQLPoolconnectionString = "Server=$servername;Database=$database;User ID=$adminlogin;Password=$password;Timeout=60;datasource=$servername"
 }
 
 Function Set-SynapseDDLs {
@@ -229,16 +234,16 @@ Set-AzDataFactoryV2LinkedService -DataFactoryName $adfName -ResourceGroupName $r
 }
 
 # Call Functions
-Get-yourPublicIP
-Set-resourceGroupName
-Set-SQLServer
-Set-FirewallRule
-Set-SQLPool
-Set-ADFName
-Set-StorageName
-Set-ContainerAndSAS
+#Get-yourPublicIP
+#Set-resourceGroupName
+#Set-SQLServer
+#Set-FirewallRule
+#Set-SQLPool
+#Set-StorageName
+#Set-ContainerAndSAS
 Get-StorageKey
 Get-ConnectionString
+Set-ADFName
 Set-ParametersFile
 #Set-ADFIR
 #Set-ADFLinkedServices
