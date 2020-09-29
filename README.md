@@ -11,3 +11,5 @@ Steps to deploy Demo Environment
 7. Load Data in Synapse
 8. Connect PBI to Synapse
 9. In SQLPool Firewallsettings, enable flag "Allow Azure services and resources to access this server"
+Regenerate Master Key Passwird in Synapse "ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = '<Password>'"
+  
