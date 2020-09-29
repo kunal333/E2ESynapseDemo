@@ -1,6 +1,10 @@
-Connect-AzAccount
-Get-AzSubscription
-Set-AzContext -SubscriptionName "Adam's sub"
+$currentTime = Get-Date
+Write-Host "Script started at" + $currentTime
+
+# Install-Module dbatools
+# Connect-AzAccount
+# Get-AzSubscription
+# Set-AzContext -SubscriptionName "Adam's sub"
 
 #Get Urer Input
 $resourceGroupName = Read-Host "Enter Resource Group Name"
@@ -10,29 +14,13 @@ $password = Read-Host "Enter SQL Server Password" #-assecurestring
 $servername = $resourceGroupName.ToLower()+"server"
 $database = $resourceGroupName.ToLower()+"pool"
 $adfName = $resourceGroupName.ToLower()+"adf"
+#$integrationRuntimeName = $resourceGroupName.ToLower()+"ir"
 $storageName = $resourceGroupName.ToLower()+"storage"
 $location = "westus2"
 $adminlogin = $servername+"admin"
 $path = Get-Location
 $ContainerName = "cms-part-d-prescriber"
 
-
-# Call Functions
-Get-yourPublicIP
-Set-resourceGroupName
-Set-sqlServerName
-Set-FirewallRule
-Set-DatabaseName
-Set-ADFName
-Set-StorageName
-Set-ContainerAndSAS
-Set-DeployADFARMTemplate
-Get-StorageKey
-Get-ConnectionString
-Set-ParametersFile
-#Get-CMSDataAndUnzip
-#Set-UploadCMSData
-#Set-CleanUp
 
 # Functions
 
@@ -53,14 +41,14 @@ Function Set-resourceGroupName {
     }
 }
 
-Function Set-sqlServerName {
+Function Set-SQLServer {
     
     $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
     if ($serverInstance)
     {
         Write-Host "Server Name already exists"
         $script:servername = Read-Host "Enter Server Name"
-        Set-sqlServerName
+        Set-SQLServer
     }
     else 
     {
@@ -68,14 +56,14 @@ Function Set-sqlServerName {
     }
 }
 
-Function Set-DatabaseName {
+Function Set-SQLPool {
      
      $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
     if ($dbInstance)
     {
         Write-Host "Server Name already exists"
         $script:database = Read-Host "Enter Database Name"
-        Set-DatabaseName
+        Set-SQLPool
     }
     else {
         New-AzSqlDatabase -ResourceGroupName $resourcegroupname -ServerName $servername -DatabaseName $database  -Edition "DataWarehouse" -RequestedServiceObjectiveName "DW100c" -CollationName "SQL_Latin1_General_CP1_CI_AS" -MaxSizeBytes 10995116277760
@@ -151,25 +139,6 @@ Function Set-UploadCMSData {
 }
 
 Function Set-CleanUp {
-
-}
-
-Function Set-DeployADFARMTemplate {
-    $templateFile = "$path/adf_csm_arm_template.json"
-    $parameterFile="$path/adf_csm_arm_template_parameters.json"
-    New-AzResourceGroupDeployment `
-    -Name $adfName `
-    -ResourceGroupName $resourceGroupName `
-    -TemplateFile $templateFile `
-    -TemplateParameterFile $parameterFile
-}
-
-Function Get-StorageKey {
-    $script:storageKey1 = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageName -ListKerbKey)[0].Value
-}
-
-Function Get-ConnectionString {
-    $script:SQLPoolconnectionString = "Server=tcp:"+$servername+".database.windows.net,1433;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 }
 
 Function Set-ParametersFile {
@@ -202,4 +171,87 @@ Function Set-ParametersFile {
 
 }
 
+Function Set-DeployADFARMTemplate {
+    $templateFile = "$path/adf_csm_arm_template.json"
+    $parameterFile="$path/adf_csm_arm_template_parameters.json"
+    New-AzResourceGroupDeployment `
+    -Name $adfName `
+    -ResourceGroupName $resourceGroupName `
+    -TemplateFile $templateFile `
+    -TemplateParameterFile $parameterFile
+}
+
+Function Get-StorageKey {
+    $script:storageKey1 = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageName -ListKerbKey)[0].Value
+}
+
+Function Get-ConnectionString {
+    $script:SQLPoolconnectionString = "Server=tcp:"+$servername+".database.windows.net,1433;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+#    $script:SQLPoolconnectionString = "Server=$servername;Database=$database;User ID=$adminlogin;Password=$password;Timeout=60"
+}
+
+Function Set-SynapseDDLs {
+
+$synapseSqlName = $servername+".database.windows.net"
+$loginName = Get-Credential -Message "Enter your SQL on-demand password" -UserName $adminlogin
+Invoke-DbaQuery -SqlInstance $synapseSqlName -Database $databaseName -SqlCredential $loginName -File "$path/synapseCMSddls.sql"
+}
+
+Function Get-ADFIR {
+    $integrationRuntimeName = Get-AzDataFactoryV2IntegrationRuntime $adfName -ResourceGroupName $resourceGroupName
+}
+
+Function Set-ADFLinkedServices {
+    $sqlServerLinkedServiceDefinition = @"
+{
+   "properties": {
+     "type": "AzureSqlDW",
+     "typeProperties": {
+         "connectionString": {
+             "type": "SecureString",
+            "value": "Server=$servername;Database=$database;User ID=$adminlogin;Password=$password;Timeout=60"
+         }
+     }
+ },
+ "name": "SynapseLinkedService"
+}
+"@
+
+## IMPORTANT: stores the JSON definition in a file that will be used by the Set-AzDataFactoryLinkedService command. 
+$sqlServerLinkedServiceDefinition | Out-File "$path\SynapseLinkedService.json"
+
+## Encrypt SQL Server credentials 
+New-AzDataFactoryV2LinkedServiceEncryptedCredential -IntegrationRuntimeName "AutoResolveIntegrationRuntime" -DataFactoryName $adfName -ResourceGroupName $resourceGroupName -DefinitionFile "$path\SynapseLinkedService.json" > "$path\EncryptedSynapseLinkedService.json"
+
+# Create a SQL Server linked service
+Set-AzDataFactoryV2LinkedService -DataFactoryName $adfName -ResourceGroupName $resourceGroupName -Name "EncryptedSqlServerLinkedService" -File "$path\EncryptedSynapseLinkedService.json"
+
+}
+
+# Call Functions
+Get-yourPublicIP
+Set-resourceGroupName
+Set-SQLServer
+Set-FirewallRule
+Set-SQLPool
+Set-ADFName
+Set-StorageName
+Set-ContainerAndSAS
+Get-StorageKey
+Get-ConnectionString
+Set-ParametersFile
+#Set-ADFIR
+#Set-ADFLinkedServices
+Set-DeployADFARMTemplate
+#Set-SynapseDDLs
+
 write-host "RG:$resourceGroupName, Server:$servername, DB:$database, SQLServerAdminUsername:$adminlogin, ADF Name:$adfName, StorageName:$storageName, IP address:$ipaddr, Password:$password, SaSTokey:$sasToken"
+
+$currentTime = Get-Date
+Write-Host "Script Finished at" + $currentTime
+
+
+#Get-CMSDataAndUnzip
+#Set-UploadCMSData
+#Set-CleanUp
+

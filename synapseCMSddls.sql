@@ -1,4 +1,4 @@
-DROP TABLE [dbo].[States];
+-- DROP TABLE [dbo].[States];
 CREATE TABLE [dbo].[States](
 	[State] [varchar](2) NULL,
 	[StateKey] [int] NULL
@@ -9,7 +9,7 @@ WITH
 )
 GO
 
-DROP TABLE [dbo].[Specialty];
+-- DROP TABLE [dbo].[Specialty];
 CREATE TABLE [dbo].[Specialty](
 	[Specialty Description Flag] [varchar](2) NULL,
 	[Year] [int] NULL,
@@ -22,7 +22,7 @@ WITH
 )
 GO
 
-DROP TABLE [dbo].[Providers];
+-- DROP TABLE [dbo].[Providers];
 CREATE TABLE [dbo].[Providers](
 	[npi] [int] NULL,
 	[Last Name] [varchar](100) NULL,
@@ -37,7 +37,7 @@ WITH
 )
 GO
 
-DROP TABLE [dbo].[Geography];
+-- DROP TABLE [dbo].[Geography];
 CREATE TABLE [dbo].[Geography](
 	[City] [varchar](50) NULL,
 	[State] [varchar](2) NULL,
@@ -52,7 +52,7 @@ WITH
 )
 GO
 
-DROP TABLE [dbo].[Drugs];
+-- DROP TABLE [dbo].[Drugs];
 CREATE TABLE [dbo].[Drugs](
 	[DrugName] [varchar](50) NULL,
 	[GenericName] [varchar](50) NULL,
@@ -65,7 +65,7 @@ WITH
 )
 GO
 
-DROP TABLE [dbo].[Details];
+-- DROP TABLE [dbo].[Details];
 CREATE TABLE [dbo].[Details](
 	[BeneficiaryCount] [int] NULL,
 	[TotalClaimCount] [int] NULL,
@@ -94,7 +94,7 @@ WITH
 GO
 
 
-DROP VIEW [dbo].[Agg-Drug-Specialty-State-Year]
+-- DROP VIEW [dbo].[Agg-Drug-Specialty-State-Year]
 GO
 
 CREATE VIEW [dbo].[Agg-Drug-Specialty-State-Year]
