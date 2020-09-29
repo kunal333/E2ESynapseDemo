@@ -10,4 +10,4 @@ Steps to deploy Demo Environment
 6. Create tables in SQL DW
 7. Load Data in Synapse
 8. Connect PBI to Synapse
-
+9. In SQLPool Firewallsettings, enable flag "Allow Azure services and resources to access this server"
