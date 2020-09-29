@@ -234,13 +234,13 @@ Set-AzDataFactoryV2LinkedService -DataFactoryName $adfName -ResourceGroupName $r
 }
 
 # Call Functions
-#Get-yourPublicIP
-#Set-resourceGroupName
-#Set-SQLServer
-#Set-FirewallRule
-#Set-SQLPool
-#Set-StorageName
-#Set-ContainerAndSAS
+Get-yourPublicIP
+Set-resourceGroupName
+Set-SQLServer
+Set-FirewallRule
+Set-SQLPool
+Set-StorageName
+Set-ContainerAndSAS
 Get-StorageKey
 Get-ConnectionString
 Set-ADFName
