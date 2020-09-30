@@ -13,7 +13,7 @@ $password = Read-Host "Enter SQL Server Password" #-assecurestring
 #Default variables
 $servername = $resourceGroupName.ToLower()+"server"
 $database = $resourceGroupName.ToLower()+"pool"
-$adfName = $resourceGroupName.ToLower()+"adf"
+$DataFactoryName = $resourceGroupName.ToLower()+"adf"
 #$integrationRuntimeName = $resourceGroupName.ToLower()+"ir"
 $storageName = $resourceGroupName.ToLower()+"storage"
 $location = "westus2"
@@ -86,7 +86,7 @@ Function Set-FirewallRule {
 
 Function Set-ADFName {
      
-    $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $adfName  -ErrorAction SilentlyContinue
+    $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
    if ($adfInstance)
    {
        Write-Host "ADF Name already exists"
@@ -94,7 +94,7 @@ Function Set-ADFName {
        Set-ADFName
    }
    else {
-        Set-AzDataFactoryV2 -ResourceGroupName $resourcegroupname -Name $adfName -Location $location
+        Set-AzDataFactoryV2 -ResourceGroupName $resourcegroupname -Name $DataFactoryName -Location $location
    }
 }
 
@@ -153,13 +153,10 @@ Function Set-ParametersFile {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "$adfName"
+            "value": "$DataFactoryName"
         },
         "AzureDataLakeStorage1_accountKey": {
             "value": "$storageKey1"
-        },
-        "AzureSqlDB_connectionString": {
-            "value": "$SQLPoolconnectionString"
         },
         "cmsdemopool_connectionString": {
             "value": "$SQLPoolconnectionString"
@@ -171,15 +168,15 @@ Function Set-ParametersFile {
 }
 "@
 
-    Set-Content adf_csm_arm_template_parameters.json $MyJsonVariable
+    Set-Content arm_template_parameters.json $MyJsonVariable
 
 }
 
 Function Set-DeployADFARMTemplate {
-    $templateFile = "$path/adf_csm_arm_template.json"
-    $parameterFile="$path/adf_csm_arm_template_parameters.json"
+    $templateFile = "$path/arm_template.json"
+    $parameterFile="$path/arm_template_parameters.json"
     New-AzResourceGroupDeployment `
-    -Name $adfName `
+    -Name $DataFactoryName `
     -ResourceGroupName $resourceGroupName `
     -TemplateFile $templateFile `
     -TemplateParameterFile $parameterFile
@@ -202,34 +199,45 @@ $loginName = Get-Credential -Message "Enter your SQL on-demand password" -UserNa
 Invoke-DbaQuery -SqlInstance $synapseSqlName -Database $databaseName -SqlCredential $loginName -File "$path/synapseCMSddls.sql"
 }
 
-Function Get-ADFIR {
-    $integrationRuntimeName = Get-AzDataFactoryV2IntegrationRuntime $adfName -ResourceGroupName $resourceGroupName
-}
+Function Get_CMSData {
+    Write-Host "Downloading CMS data from website and saving into ADLS"
+    for ($num = 13 ; $num -le 18 ; $num++)
+    {
+        $CMSFileName = "Download_CMSPart$num"
+        $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $CMSFileName
 
-Function Set-ADFLinkedServices {
-    $sqlServerLinkedServiceDefinition = @"
-{
-   "properties": {
-     "type": "AzureSqlDW",
-     "typeProperties": {
-         "connectionString": {
-             "type": "SecureString",
-            "value": "Server=$servername;Database=$database;User ID=$adminlogin;Password=$password;Timeout=60"
-         }
-     }
- },
- "name": "SynapseLinkedService"
-}
-"@
+        while ($True) {
+        $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $runId
 
-## IMPORTANT: stores the JSON definition in a file that will be used by the Set-AzDataFactoryLinkedService command. 
-$sqlServerLinkedServiceDefinition | Out-File "$path\SynapseLinkedService.json"
+        if ($run) {
+            if ($run.Status -ne 'InProgress') {
+                Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Yellow"
+                $run
+                break
+            }
+            Write-Host  "Pipeline is running...status: InProgress" -foregroundcolor "Yellow"
+        }
 
-## Encrypt SQL Server credentials 
-New-AzDataFactoryV2LinkedServiceEncryptedCredential -IntegrationRuntimeName "AutoResolveIntegrationRuntime" -DataFactoryName $adfName -ResourceGroupName $resourceGroupName -DefinitionFile "$path\SynapseLinkedService.json" > "$path\EncryptedSynapseLinkedService.json"
+        Start-Sleep -Seconds 15
+        }
+    }
+    
+    $newRunId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName "uncompress_CMS_Files"
 
-# Create a SQL Server linked service
-Set-AzDataFactoryV2LinkedService -DataFactoryName $adfName -ResourceGroupName $resourceGroupName -Name "EncryptedSqlServerLinkedService" -File "$path\EncryptedSynapseLinkedService.json"
+    while ($True) {
+        $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $newRunId
+
+        if ($run) {
+            if ($run.Status -ne 'InProgress') {
+                Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Yellow"
+                $run
+                break
+            }
+            Write-Host  "Pipeline is running...status: InProgress" -foregroundcolor "Yellow"
+        }
+
+        Start-Sleep -Seconds 15
+    }
 
 }
 
@@ -245,12 +253,11 @@ Get-StorageKey
 Get-ConnectionString
 Set-ADFName
 Set-ParametersFile
-#Set-ADFIR
-#Set-ADFLinkedServices
 Set-DeployADFARMTemplate
+Get_CMSData
 #Set-SynapseDDLs
 
-write-host "RG:$resourceGroupName, Server:$servername, DB:$database, SQLServerAdminUsername:$adminlogin, ADF Name:$adfName, StorageName:$storageName, IP address:$ipaddr, Password:$password, SaSTokey:$sasToken"
+write-host "RG:$resourceGroupName, Server:$servername, DB:$database, SQLServerAdminUsername:$adminlogin, ADF Name:$DataFactoryName, StorageName:$storageName, IP address:$ipaddr, Password:$password, SaSTokey:$sasToken"
 
 $currentTime = Get-Date
 Write-Host "Script Finished at" + $currentTime
@@ -259,4 +266,3 @@ Write-Host "Script Finished at" + $currentTime
 #Get-CMSDataAndUnzip
 #Set-UploadCMSData
 #Set-CleanUp
-

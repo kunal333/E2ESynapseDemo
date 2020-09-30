@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "value": "cmsdemo4adf"
+        },
+        "cmsdemopool_connectionString": {
+            "value": ""
+        },
+        "AzureDataLakeStorage1_accountKey": {
+            "value": ""
+        },
+        "AzureDataLakeStorage1_properties_typeProperties_url": {
+            "value": "https://cmsdemo4storage.dfs.core.windows.net/"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_13_properties_typeProperties_url": {
+            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_13.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_15_properties_typeProperties_url": {
+            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_15.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_17_properties_typeProperties_url": {
+            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_17.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_16_properties_typeProperties_url": {
+            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_16.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_14_properties_typeProperties_url": {
+            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_14.zip"
+        }
+    }
+}
