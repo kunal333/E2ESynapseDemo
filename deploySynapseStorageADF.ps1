@@ -95,6 +95,9 @@ Function Set-FirewallRule {
     $adfIP = "20.42.132.37"
 
     New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName "ADF" -StartIpAddress $adfIP -EndIpAddress $adfIP
+    
+    New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName "Allow Trusted Services" -StartIpAddress '0.0.0.0' -EndIpAddress '0.0.0.0'
+
 }
 
 Function Set-DataFactory {
