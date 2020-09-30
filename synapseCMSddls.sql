@@ -94,9 +94,6 @@ WITH
 GO
 
 
--- DROP VIEW [dbo].[Agg-Drug-Specialty-State-Year]
-GO
-
 CREATE VIEW [dbo].[Agg-Drug-Specialty-State-Year]
 AS
 SELECT SUM(dbo.Details.BeneficiaryCount) AS BeneficiaryCount, SUM(dbo.Details.TotalClaimCount) AS TotalClaimCount, SUM(dbo.Details.Total30DayFillCount) AS Total30DayFillCount, SUM(dbo.Details.TotalDaySupply) AS TotalDaySupply, SUM(dbo.Details.TotalDrugCost) AS TotalDrugCost, dbo.Details.Year, dbo.Geography.StateKey, dbo.Details.YearSpecialtyKey, 
@@ -105,4 +102,3 @@ FROM  dbo.Details LEFT OUTER JOIN
          dbo.Geography ON dbo.Details.YearGeoKey = dbo.Geography.YearGeoKey
 GROUP BY dbo.Details.Year, dbo.Geography.StateKey, dbo.Details.YearSpecialtyKey, dbo.Details.YearDrugKey
 GO
-

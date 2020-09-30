@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "cmsdemo4adf"
+            "value": "cmspartddemoadf"
         },
         "AzureDataLakeStorage1_accountKey": {
-            "value": "zfz1dc9C8dyX82GnIYG0d81WYChr0IYkapqt60kIMxkP4rHw8vcP2yXWllOxIrSmiEECcHOuWQKgK8GEchPMyQ=="
+            "value": "CALMnuckKHcKGitdr15jkSeboS0UksgKgGCNktmWMc8a/6GNpDsqtYQqGuKYh5mfep8K9MTmjfWT3qx7+jUKuA=="
         },
         "cmsdemopool_connectionString": {
-            "value": "data source=cmsdemo4server.database.windows.net;Initial Catalog=cmsdemo4pool;Persist Security Info=False;User ID=cmsdemo4serveradmin;Password=BigBrownDog0~;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            "value": "data source=cmspartddemoserver.database.windows.net;Initial Catalog=cmspartddemopool;Persist Security Info=False;User ID=cmspartddemoserveradmin;Password=Password0~;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
         },
         "AzureDataLakeStorage1_properties_typeProperties_url": {
-            "value": "https://cmsdemo4storage.dfs.core.windows.net/"
+            "value": "https://cmspartddemostorage.dfs.core.windows.net/"
         }
     }
 }
