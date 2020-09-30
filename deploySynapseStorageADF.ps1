@@ -1,7 +1,7 @@
 $currentTime = Get-Date
 Write-Host "Script started at" + $currentTime
 
-# Install-Module -Name SqlServer
+# Install-Module -Name SqlServer # Restart Powershell Command line
 # Update-Module -Name SqlServer
 
 #Connect-AzAccount
@@ -27,7 +27,7 @@ $ContainerName = "cms-part-d-prescriber"
 # Functions
 
 Function Set-resourceGroupName {
-    Write-Host  "Creating Resource Group: $resourceGroupName" 
+    Write-Host  "Step 1/15: Creating Resource Group: $resourceGroupName" 
     Write-Host "Note:All subsequent resources will be created inside this Resource Group"
 
     $rgInstance = Get-AzResourceGroup -Name $resourceGroupName `
@@ -47,7 +47,7 @@ Function Set-resourceGroupName {
 
 Function Set-SQLServer {
     
-    Write-Host  "Creating SQL Server: $servername"
+    Write-Host  "Step 2/15: Creating SQL Server: $servername"
 
     $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
     if ($serverInstance)
@@ -64,7 +64,7 @@ Function Set-SQLServer {
 
 Function Set-SQLPool {
 
-    Write-Host  "Creating SQL Pool: $database"
+    Write-Host  "Step 5/15: Creating SQL Pool: $database"
 
      $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
     if ($dbInstance)
@@ -79,14 +79,14 @@ Function Set-SQLPool {
 }
 
 function Get-yourPublicIP {
-    Write-Host  "Getting your Public IP so we can set in the Synapse Firewall"
+    Write-Host  "Step 3/15: Getting your Public IP so we can set in the Synapse Firewall"
 
     $script:ipaddr = (Invoke-WebRequest -uri "https://api.ipify.org/").Content
 }
 
 Function Set-FirewallRule {
 
-    Write-Host  "Setting the Firewall Rules for Synapse"
+    Write-Host  "Step 4/15: Setting the Firewall Rules for Synapse"
     
     $clientIPRuleName = "ClientIP-"+$ipaddr
 
@@ -102,7 +102,7 @@ Function Set-FirewallRule {
 
 Function Set-DataFactory {
 
-    Write-Host  "Creating Azure Data Factory: $DataFactoryName"
+    Write-Host  "Step 10/15: Creating Azure Data Factory: $DataFactoryName"
 
     $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
    if ($adfInstance)
@@ -118,7 +118,7 @@ Function Set-DataFactory {
 
 Function Set-StorageName {
 
-    Write-Host  "Creating Storage Account: $storageName"
+    Write-Host  "Step 6/15: Creating Storage Account: $storageName"
 
     $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageName  -ErrorAction SilentlyContinue
    if ($storageInstance)
@@ -134,7 +134,7 @@ Function Set-StorageName {
 
 Function Set-ContainerAndSAS {
 
-    Write-Host  "Creating Storage Containers $ContainerName and Staging for the CMS data"
+    Write-Host  "Step 7/15: Creating Storage Containers $ContainerName and Staging for the CMS data"
 
     $script:context = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageName).context
 
@@ -151,7 +151,7 @@ Function Set-CleanUp {
 
 Function Set-ParametersFile {
 
-    Write-Host  "Creating Parameters File for the ADF ARM Template"
+    Write-Host  "Step 11/15: Creating Parameters File for the ADF ARM Template"
 
     $MyJsonVariable = @"
 {
@@ -180,7 +180,7 @@ Function Set-ParametersFile {
 
 Function Set-DeployADFARMTemplate {
 
-    Write-Host  "Deploying ADF ARM Template with the new Parameters File"
+    Write-Host  "Step 12/15: Deploying ADF ARM Template with the new Parameters File"
 
     $templateFile = "$path/arm_template.json"
     $parameterFile="$path/arm_template_parameters.json"
@@ -193,21 +193,21 @@ Function Set-DeployADFARMTemplate {
 
 Function Get-StorageKey {
     
-    Write-Host  "Getting Storage Access Key"
+    Write-Host  "Step 8/15: Getting Storage Access Key"
 
     $script:storageKey1 = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageName -ListKerbKey)[0].Value
 }
 
 Function Get-ConnectionString {
     
-    Write-Host  "Getting Connection String for the Synapse Pool"
+    Write-Host  "Step 9/15: Getting Connection String for the Synapse Pool"
 
     $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password="+$password+";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 }
 
 Function Set-SynapseDDLs {
 
-    Write-Host  "Creating Tables and Views in Synapse"
+    Write-Host  "Step 14/15: Creating Tables and Views in Synapse"
 
     $synapseSqlName = $servername+".database.windows.net"
     Invoke-Sqlcmd -InputFile "$path/synapseCMSddls.sql" -ServerInstance $synapseSqlName -Database $database -Username $adminlogin -Password $password
@@ -215,7 +215,7 @@ Function Set-SynapseDDLs {
 
 Function Get_CMSData {
 
-    Write-Host "Downloading CMS data from website and saving into ADLS"
+    Write-Host "Step 13/15: Downloading CMS data from website and saving into ADLS"
 
     for ($num = 13 ; $num -le 18 ; $num++)
     {
@@ -259,10 +259,40 @@ Function Get_CMSData {
 
 }
 
+Function Set-LoadSynapseTables {
+
+    Write-Host "Step 15/15: Executing ADF Pipelines that loades into Synapse the CMS Data from Storage "
+
+    $Tables = @("Drug","Geography","Providers","Specialty","States","Details")
+
+    Foreach ($i in $Tables)
+    {
+        Write-Host "Loading Table: $i"
+        $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $i
+
+        while ($True) {
+        $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $runId
+
+        if ($run) {
+            if ($run.Status -ne 'InProgress') {
+                Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Yellow"
+                $run
+                break
+            }
+            Write-Host  "Pipeline is running...status: InProgress" -foregroundcolor "Yellow"
+        }
+
+        Start-Sleep -Seconds 30
+        }
+    }
+    
+    Write-Host "All Tables loaded to Synapse Instance: $database"
+}
+
 # Call Functions
-Get-yourPublicIP
 Set-resourceGroupName
 Set-SQLServer
+Get-yourPublicIP
 Set-FirewallRule
 Set-SQLPool
 Set-StorageName
@@ -274,6 +304,8 @@ Set-ParametersFile
 Set-DeployADFARMTemplate
 Get_CMSData
 Set-SynapseDDLs
+Set-LoadSynapseTables
+
 #Set-CleanUp
 
 $currentTime = Get-Date
