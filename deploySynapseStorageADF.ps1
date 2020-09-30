@@ -1,10 +1,12 @@
 $currentTime = Get-Date
 Write-Host "Script started at" + $currentTime
 
-# Install-Module dbatools
-# Connect-AzAccount
-# Get-AzSubscription
-# Set-AzContext -SubscriptionName "Adam's sub"
+# Install-Module -Name SqlServer
+# Update-Module -Name SqlServer
+
+#Connect-AzAccount
+#Get-AzSubscription
+#Set-AzContext -SubscriptionName <subscription name>
 
 #Get Urer Input
 $resourceGroupName = Read-Host "Enter Resource Group Name"
