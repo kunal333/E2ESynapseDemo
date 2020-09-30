@@ -5,9 +5,9 @@ CREATE TABLE [dbo].[States](
 )
 WITH
 (
-	DISTRIBUTION = REPLICATE
+    DISTRIBUTION = REPLICATE
 )
-GO
+;
 
 -- DROP TABLE [dbo].[Specialty];
 CREATE TABLE [dbo].[Specialty](
@@ -25,9 +25,9 @@ GO
 -- DROP TABLE [dbo].[Providers];
 CREATE TABLE [dbo].[Providers](
 	[npi] [int] NULL,
-	[Last Name] [varchar](100) NULL,
-	[First Name] [varchar](50) NULL,
-	[Full Name] [varchar](150) NULL,
+	[LastName] [varchar](100) NULL,
+	[FirstName] [varchar](50) NULL,
+	[FullName] [varchar](150) NULL,
 	[Year] [int] NULL,
 	[YearNPI] [int] NOT NULL
 )
@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[Geography](
 	[State] [varchar](2) NULL,
 	[Year] [int] NULL,
 	[YearGeoKey] [int] NULL,
-	[City State] [varchar](50) NULL,
+	[CityState] [varchar](50) NULL,
 	[StateKey] [int] NULL
 )
 WITH

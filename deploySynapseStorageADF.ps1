@@ -25,6 +25,8 @@ $ContainerName = "cms-part-d-prescriber"
 # Functions
 
 Function Set-resourceGroupName {
+    Write-Host  "Creating Resource Group: $resourceGroupName" 
+    Write-Host "Note:All subsequent resources will be created inside this Resource Group"
 
     $rgInstance = Get-AzResourceGroup -Name $resourceGroupName `
         -ErrorAction SilentlyContinue
@@ -43,6 +45,8 @@ Function Set-resourceGroupName {
 
 Function Set-SQLServer {
     
+    Write-Host  "Creating SQL Server: $servername"
+
     $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
     if ($serverInstance)
     {
@@ -57,7 +61,9 @@ Function Set-SQLServer {
 }
 
 Function Set-SQLPool {
-     
+
+    Write-Host  "Creating SQL Pool: $database"
+
      $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
     if ($dbInstance)
     {
@@ -71,10 +77,15 @@ Function Set-SQLPool {
 }
 
 function Get-yourPublicIP {
+    Write-Host  "Getting your Public IP so we can set in the Synapse Firewall"
+
     $script:ipaddr = (Invoke-WebRequest -uri "https://api.ipify.org/").Content
 }
 
 Function Set-FirewallRule {
+
+    Write-Host  "Setting the Firewall Rules for Synapse"
+    
     $clientIPRuleName = "ClientIP-"+$ipaddr
 
     New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName $clientIPRuleName -StartIpAddress $ipaddr -EndIpAddress $ipaddr
@@ -84,14 +95,16 @@ Function Set-FirewallRule {
     New-AzSqlServerFirewallRule -ResourceGroupName $resourcegroupname -ServerName $servername -FirewallRuleName "ADF" -StartIpAddress $adfIP -EndIpAddress $adfIP
 }
 
-Function Set-ADFName {
-     
+Function Set-DataFactory {
+
+    Write-Host  "Creating Azure Data Factory: $DataFactoryName"
+
     $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
    if ($adfInstance)
    {
        Write-Host "ADF Name already exists"
        $script:adfName = Read-Host "Enter ADF Name"
-       Set-ADFName
+       Set-DataFactory
    }
    else {
         Set-AzDataFactoryV2 -ResourceGroupName $resourcegroupname -Name $DataFactoryName -Location $location
@@ -99,7 +112,9 @@ Function Set-ADFName {
 }
 
 Function Set-StorageName {
-     
+
+    Write-Host  "Creating Storage Account: $storageName"
+
     $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageName  -ErrorAction SilentlyContinue
    if ($storageInstance)
    {
@@ -112,7 +127,10 @@ Function Set-StorageName {
    }
 }
 
-Function Set-ContainerAndSAS {    
+Function Set-ContainerAndSAS {
+
+    Write-Host  "Creating Storage Containers $ContainerName and Staging for the CMS data"
+
     $script:context = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageName).context
 
     New-AzStorageContainer -Context $context -Name $ContainerName -Permission Off
@@ -123,29 +141,12 @@ Function Set-ContainerAndSAS {
 
 }
 
-Function Get-CMSDataAndUnzip {
-    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_13.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_13.zip
-    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_14.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_14.zip
-    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_15.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_15.zip
-    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_16.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_16.zip
-    Invoke-WebRequest http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_17.zip -OutFile $path/PartD_Prescriber_PUF_NPI_DRUG_17.zip
-<#
-    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_13.zip" -DestinationPath $path -Verbose
-    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_14.zip" -DestinationPath $path -Verbose
-    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_15.zip" -DestinationPath $path -Verbose
-    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_16.zip" -DestinationPath $path -Verbose
-    Expand-Archive -Path "$path/PartD_Prescriber_PUF_NPI_DRUG_17.zip" -DestinationPath $path -Verbose
-#>
-}
-
-Function Set-UploadCMSData {
-    ./azcopy copy "$path/PartD_*.txt" "https://$storageName.blob.core.windows.net/$ContainerName/$sasToken" --recursive=true
-}
-
 Function Set-CleanUp {
 }
 
 Function Set-ParametersFile {
+
+    Write-Host  "Creating Parameters File for the ADF ARM Template"
 
     $MyJsonVariable = @"
 {
@@ -173,6 +174,9 @@ Function Set-ParametersFile {
 }
 
 Function Set-DeployADFARMTemplate {
+
+    Write-Host  "Deploying ADF ARM Template with the new Parameters File"
+
     $templateFile = "$path/arm_template.json"
     $parameterFile="$path/arm_template_parameters.json"
     New-AzResourceGroupDeployment `
@@ -183,24 +187,31 @@ Function Set-DeployADFARMTemplate {
 }
 
 Function Get-StorageKey {
+    
+    Write-Host  "Getting Storage Access Key"
+
     $script:storageKey1 = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageName -ListKerbKey)[0].Value
 }
 
 Function Get-ConnectionString {
+    
+    Write-Host  "Getting Connection String for the Synapse Pool"
+
     $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password="+$password+";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-#    "integrated security=False;encrypt=True;connection timeout=30;data source=cmsdemo4server.database.windows.net;initial catalog=cmsdemo4pool;user id=cmsdemo4serveradmin;server=tcp:cmsdemo4server.database.windows.net,1433;persist security info=False;multipleactiveresultsets=False;trustservercertificate=False",
-     #    $script:SQLPoolconnectionString = "Server=$servername;Database=$database;User ID=$adminlogin;Password=$password;Timeout=60;datasource=$servername"
 }
 
 Function Set-SynapseDDLs {
 
-$synapseSqlName = $servername+".database.windows.net"
-$loginName = Get-Credential -Message "Enter your SQL on-demand password" -UserName $adminlogin
-Invoke-DbaQuery -SqlInstance $synapseSqlName -Database $databaseName -SqlCredential $loginName -File "$path/synapseCMSddls.sql"
+    Write-Host  "Creating Tables and Views in Synapse"
+
+    $synapseSqlName = $servername+".database.windows.net"
+    Invoke-Sqlcmd -InputFile "$path/synapseCMSddls.sql" -ServerInstance $synapseSqlName -Database $database -Username $adminlogin -Password $password
 }
 
 Function Get_CMSData {
+
     Write-Host "Downloading CMS data from website and saving into ADLS"
+
     for ($num = 13 ; $num -le 18 ; $num++)
     {
         $CMSFileName = "Download_CMSPart$num"
@@ -238,6 +249,8 @@ Function Get_CMSData {
 
         Start-Sleep -Seconds 15
     }
+    
+    Write-Host "All CMS files needed for the demo saved in the Storage Account: $storageName"
 
 }
 
@@ -251,18 +264,12 @@ Set-StorageName
 Set-ContainerAndSAS
 Get-StorageKey
 Get-ConnectionString
-Set-ADFName
+Set-DataFactory
 Set-ParametersFile
 Set-DeployADFARMTemplate
 Get_CMSData
-#Set-SynapseDDLs
-
-write-host "RG:$resourceGroupName, Server:$servername, DB:$database, SQLServerAdminUsername:$adminlogin, ADF Name:$DataFactoryName, StorageName:$storageName, IP address:$ipaddr, Password:$password, SaSTokey:$sasToken"
+Set-SynapseDDLs
+#Set-CleanUp
 
 $currentTime = Get-Date
 Write-Host "Script Finished at" + $currentTime
-
-
-#Get-CMSDataAndUnzip
-#Set-UploadCMSData
-#Set-CleanUp

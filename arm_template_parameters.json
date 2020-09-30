@@ -5,29 +5,14 @@
         "factoryName": {
             "value": "cmsdemo4adf"
         },
-        "cmsdemopool_connectionString": {
-            "value": ""
-        },
         "AzureDataLakeStorage1_accountKey": {
-            "value": ""
+            "value": "zfz1dc9C8dyX82GnIYG0d81WYChr0IYkapqt60kIMxkP4rHw8vcP2yXWllOxIrSmiEECcHOuWQKgK8GEchPMyQ=="
+        },
+        "cmsdemopool_connectionString": {
+            "value": "data source=cmsdemo4server.database.windows.net;Initial Catalog=cmsdemo4pool;Persist Security Info=False;User ID=cmsdemo4serveradmin;Password=BigBrownDog0~;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
         },
         "AzureDataLakeStorage1_properties_typeProperties_url": {
             "value": "https://cmsdemo4storage.dfs.core.windows.net/"
-        },
-        "PartD_Prescriber_PUF_NPI_DRUG_13_properties_typeProperties_url": {
-            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_13.zip"
-        },
-        "PartD_Prescriber_PUF_NPI_DRUG_15_properties_typeProperties_url": {
-            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_15.zip"
-        },
-        "PartD_Prescriber_PUF_NPI_DRUG_17_properties_typeProperties_url": {
-            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_17.zip"
-        },
-        "PartD_Prescriber_PUF_NPI_DRUG_16_properties_typeProperties_url": {
-            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_16.zip"
-        },
-        "PartD_Prescriber_PUF_NPI_DRUG_14_properties_typeProperties_url": {
-            "value": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_14.zip"
         }
     }
 }
