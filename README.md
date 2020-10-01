@@ -32,7 +32,7 @@ The purpose of the script is to automate the deployment process for spinning up 
 3. Execute the script deploySynapseStorageADF.ps1 from Powershell, example `./deploySynapseStorageADF.ps1`
 
 **Things to note:**
-1. In order to connect to Synapse instance, make sure to add your IP address to the Firewall
+1. In order to connect to Synapse instance, make sure to add your IP address to the SQLPool Firewall settings
 2. You might have to also enable flag in SQLPool Firewall settings to be able to allow Polybase "Allow Azure services and resources to access this server"
 3. You might have to regenerate Master Key Password in Synapse `ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = '<Password>'"`.  Although synapseCMSddls.sql does reset the Master Key.
 
