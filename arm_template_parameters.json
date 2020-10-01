@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "cmsdemo2adf"
+            "value": ""
         },
         "AzureDataLakeStorage1_accountKey": {
-            "value": "Y4DXEjLbBEdx89qCCI0LY7fRQth5RDNXosuOnzVJTmrHiZ28AdiAkEKCGZLjP9PlomOmudMgtezBBnr9kM3KCg=="
+            "value": ""
         },
         "cmsdemopool_connectionString": {
-            "value": "data source=cmsdemo2server.database.windows.net;Initial Catalog=cmsdemo2pool;Persist Security Info=False;User ID=cmsdemo2serveradmin;Password=Password0~;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            "value": ""
         },
         "AzureDataLakeStorage1_properties_typeProperties_url": {
-            "value": "https://cmsdemo2storage.dfs.core.windows.net/"
+            "value": ""
         }
     }
 }
