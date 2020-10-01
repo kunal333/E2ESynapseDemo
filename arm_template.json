@@ -30,7 +30,7 @@
         "PartD_Prescriber_PUF_NPI_DRUG_17_properties_typeProperties_url": {
             "type": "string",
             "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_17.zip"
-        },
+        }, 
         "PartD_Prescriber_PUF_NPI_DRUG_16_properties_typeProperties_url": {
             "type": "string",
             "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_16.zip"
