@@ -2,11 +2,6 @@
 
 The purpose of the script is to automate the deployment process for spinning up the demo environment.  The script takes care of deploying Resources in Azure like Synapse, Azure Data Factory and ADLS Storage.  It also downloads Healthcare based CMS data and loads into Synapse database.  This CMS data is then used for reporting using PowerBI.
 
-Below are the pre-requisite for the script:
-1. Powershell version 7.0.3 or later
-2. Install Powershell Module SQLServer
-3. Access to the Azure Portal to be able to create resources
-
 The script workes in following steps:
 1. Prompts User for Resource Group Name and SQL Pool Password
 2. Presets various variables like SQL Server Name, Azure Data Factory Name, Storage Name, etc. using Resource Group Name provided in Step 1.
@@ -24,8 +19,17 @@ The script workes in following steps:
 14. Creates Tables and Views in Synapse using script synapseCMSddls.sql
 15. Downloads CMS data from website cms.gov and saves into the Storage
 16. Executes ADF pipelines that loads the CMS Data from Storage into Synapse
+17. Next step is to get the PowerBI tempate and connect to the Synapse instance.
 
-Next step is to get the PowerBI tempate and connect to the Synapse instance.
+Pre-requisites:
+1. Powershell version 7.0.3 or later
+2. Install Powershell Module SQLServer
+3. Access to the Azure Portal to be able to create resources
+
+How to use the script:
+1. Clone Git repository local
+2. Open Powershell and navigate to the git folder
+3. Execute the script deploySynapseStorageADF.ps1 from Powershell, example "./deploySynapseStorageADF.ps1"
 
 Things to note:
 1. In order to connect to Synapse instance, make sure to add your IP address to the Firewall
