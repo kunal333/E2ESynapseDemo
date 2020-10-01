@@ -1,13 +1,11 @@
-# E2ESynapseDemo
+# CMS Demo using Azure Synapse, Azure Data Factory and PowerBI
 
 The purpose of the script is to automate the deployment process for spinning up the demo environment.  The script takes care of deploying Resources in Azure like Synapse, Azure Data Factory and ADLS Storage.  It also downloads Healthcare based CMS data and loads into Synapse database.  This CMS data is then used for reporting using PowerBI.
-
 
 Below are the pre-requisite for the script:
 1. Powershell version 7.0.3 or later
 2. Install Powershell Module SQLServer
 3. Access to the Azure Portal to be able to create resources
-
 
 The script workes in following steps:
 1. Prompts User for Resource Group Name and SQL Pool Password
@@ -33,4 +31,5 @@ Things to note:
 1. In order to connect to Synapse instance, make sure to add your IP address to the Firewall
 2. You might have to also enable flag in SQLPool Firewall settings to be able to allow Polybase "Allow Azure services and resources to access this server"
 3. You might have to regenerate Master Key Password in Synapse "ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = '<Password>'".  Although synapseCMSddls.sql does reset the Master Key.
-4.  
+
+
