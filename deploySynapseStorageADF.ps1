@@ -16,7 +16,6 @@ $password = Read-Host "Enter SQL Server Password" #-assecurestring
 $servername = $resourceGroupName.ToLower()+"server"
 $database = $resourceGroupName.ToLower()+"pool"
 $DataFactoryName = $resourceGroupName.ToLower()+"adf"
-#$integrationRuntimeName = $resourceGroupName.ToLower()+"ir"
 $storageName = $resourceGroupName.ToLower()+"storage"
 $location = "westus2"
 $adminlogin = $servername+"admin"
@@ -74,7 +73,7 @@ Function Set-SQLPool {
         Set-SQLPool
     }
     else {
-        New-AzSqlDatabase -ResourceGroupName $resourcegroupname -ServerName $servername -DatabaseName $database  -Edition "DataWarehouse" -RequestedServiceObjectiveName "DW100c" -CollationName "SQL_Latin1_General_CP1_CI_AS" -MaxSizeBytes 10995116277760
+        New-AzSqlDatabase -ResourceGroupName $resourcegroupname -ServerName $servername -DatabaseName $database  -Edition "DataWarehouse" -RequestedServiceObjectiveName "DW400c" -CollationName "SQL_Latin1_General_CP1_CI_AS" -MaxSizeBytes 10995116277760
     }
 }
 
@@ -217,7 +216,7 @@ Function Get_CMSData {
 
     Write-Host "Step 13/15: Downloading CMS data from website and saving into ADLS"
 
-    for ($num = 13 ; $num -le 18 ; $num++)
+    for ($num = 13 ; $num -le 17 ; $num++)
     {
         $CMSFileName = "Download_CMSPart$num"
         $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $CMSFileName
@@ -263,30 +262,97 @@ Function Set-LoadSynapseTables {
 
     Write-Host "Step 15/15: Executing ADF Pipelines that loades into Synapse the CMS Data from Storage "
 
-    $Tables = @("Drug","Geography","Providers","Specialty","States","Details")
+    $TablesList1 = @("Drug","Providers","Specialty","States")
+    $myarray1 = [System.Collections.ArrayList]::new()
 
-    Foreach ($i in $Tables)
+    Foreach ($i in $TablesList1)
     {
         Write-Host "Loading Table: $i"
         $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $i
-
+        $myArray1.Add($runId)
+    }
+    foreach ($element in $myArray1) {$element}
+    foreach ($element in $myArray1) {
         while ($True) {
-        $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $runId
 
-        if ($run) {
-            if ($run.Status -ne 'InProgress') {
-                Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Yellow"
-                $run
-                break
+            $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $element
+
+            if ($run) {
+                if ($run.Status -ne 'InProgress') {
+                    Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Green"
+                    $run
+                    break
+                }
+                Write-Host  "Pipeline is running...status: InProgress... Will check again in 60 seconds" -foregroundcolor "Yellow"
             }
-            Write-Host  "Pipeline is running...status: InProgress" -foregroundcolor "Yellow"
-        }
 
-        Start-Sleep -Seconds 30
+        Start-Sleep -Seconds 60
         }
     }
-    
+
+    $TablesList2 = @("Geography")
+    $myarray2 = [System.Collections.ArrayList]::new()
+
+    Foreach ($i in $TablesList2)
+    {
+        Write-Host "Loading Table: $i"
+        $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $i
+        $myArray2.Add($runId)
+    }
+    foreach ($element in $myArray2) {$element}
+    foreach ($element in $myArray2) {
+        while ($True) {
+
+            $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $element
+
+            if ($run) {
+                if ($run.Status -ne 'InProgress') {
+                    Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Green"
+                    $run
+                    break
+                }
+                Write-Host  "Pipeline is running...status: InProgress... Will check again in 60 seconds" -foregroundcolor "Yellow"
+            }
+
+        Start-Sleep -Seconds 60
+        }
+    }
+
+    $TablesList3 = @("Details")
+    $myarray3 = [System.Collections.ArrayList]::new()
+
+    Foreach ($i in $TablesList3)
+    {
+        Write-Host "Loading Table: $i"
+        $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $i
+        $myArray3.Add($runId)
+    }
+    foreach ($element in $myArray3) {Write-Host "Pipeline IDs as: $element"}
+    foreach ($element in $myArray3) {
+        while ($True) {
+
+            $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $element
+
+            if ($run) {
+                if ($run.Status -ne 'InProgress') {
+                    Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Green"
+                    $run
+                    break
+                }
+                Write-Host  "Pipeline is running...status: InProgress... Will check again in 60 seconds" -foregroundcolor "Yellow"
+            }
+
+        Start-Sleep -Seconds 60
+        }
+    }
+
     Write-Host "All Tables loaded to Synapse Instance: $database"
+}
+
+Function Set-ScaleDownSynapse {
+    Write-Host "Synapse Scale down has started from DW400c to DW100c" -foregroundcolor "Yellow"
+    Set-AzSqlDatabase -ResourceGroupName $resourceGroupName -DatabaseName $database -ServerName $servername -RequestedServiceObjectiveName "DW100c"
+    Write-Host "Synapse Scale down has finished to DW100c" -foregroundcolor "Green"
 }
 
 # Call Functions
@@ -305,6 +371,7 @@ Set-DeployADFARMTemplate
 Get_CMSData
 Set-SynapseDDLs
 Set-LoadSynapseTables
+Set-ScaleDownSynapse
 
 #Set-CleanUp
 

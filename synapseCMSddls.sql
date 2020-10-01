@@ -1,4 +1,7 @@
--- DROP TABLE [dbo].[States];
+ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = 'Password0~';
+GO
+
+--DROP TABLE[dbo].[States];
 CREATE TABLE [dbo].[States](
 	[State] [varchar](2) NULL,
 	[StateKey] [int] NULL
@@ -9,9 +12,9 @@ WITH
 )
 ;
 
--- DROP TABLE [dbo].[Specialty];
+--DROP TABLE[dbo].[Specialty];
 CREATE TABLE [dbo].[Specialty](
-	[Specialty Description Flag] [varchar](2) NULL,
+	[SpecialtyDescriptionFlag] [varchar](2) NULL,
 	[Year] [int] NULL,
 	[YearSpecialtyKey] [int] NULL,
 	[Specialty] [varchar](100) NULL
@@ -19,10 +22,9 @@ CREATE TABLE [dbo].[Specialty](
 WITH
 (
 	DISTRIBUTION = REPLICATE
-)
-GO
+);
 
--- DROP TABLE [dbo].[Providers];
+--DROP TABLE[dbo].[Providers];
 CREATE TABLE [dbo].[Providers](
 	[npi] [int] NULL,
 	[LastName] [varchar](100) NULL,
@@ -34,10 +36,9 @@ CREATE TABLE [dbo].[Providers](
 WITH
 (
 	DISTRIBUTION = REPLICATE
-)
-GO
+);
 
--- DROP TABLE [dbo].[Geography];
+--DROP TABLE[dbo].[Geography];
 CREATE TABLE [dbo].[Geography](
 	[City] [varchar](50) NULL,
 	[State] [varchar](2) NULL,
@@ -49,10 +50,9 @@ CREATE TABLE [dbo].[Geography](
 WITH
 (
 	DISTRIBUTION = REPLICATE
-)
-GO
+);
 
--- DROP TABLE [dbo].[Drugs];
+--DROP TABLE[dbo].[Drugs];
 CREATE TABLE [dbo].[Drugs](
 	[DrugName] [varchar](50) NULL,
 	[GenericName] [varchar](50) NULL,
@@ -62,10 +62,9 @@ CREATE TABLE [dbo].[Drugs](
 WITH
 (
 	DISTRIBUTION = REPLICATE
-)
-GO
+);
 
--- DROP TABLE [dbo].[Details];
+--DROP TABLE[dbo].[Details];
 CREATE TABLE [dbo].[Details](
 	[BeneficiaryCount] [int] NULL,
 	[TotalClaimCount] [int] NULL,
@@ -90,10 +89,10 @@ WITH
 (
 	DISTRIBUTION = ROUND_ROBIN,
 	CLUSTERED COLUMNSTORE INDEX
-)
+);
 GO
 
-
+--DROP VIEW [dbo].[Agg-Drug-Specialty-State-Year];
 CREATE VIEW [dbo].[Agg-Drug-Specialty-State-Year]
 AS
 SELECT SUM(dbo.Details.BeneficiaryCount) AS BeneficiaryCount, SUM(dbo.Details.TotalClaimCount) AS TotalClaimCount, SUM(dbo.Details.Total30DayFillCount) AS Total30DayFillCount, SUM(dbo.Details.TotalDaySupply) AS TotalDaySupply, SUM(dbo.Details.TotalDrugCost) AS TotalDrugCost, dbo.Details.Year, dbo.Geography.StateKey, dbo.Details.YearSpecialtyKey, 
@@ -101,4 +100,5 @@ SELECT SUM(dbo.Details.BeneficiaryCount) AS BeneficiaryCount, SUM(dbo.Details.To
 FROM  dbo.Details LEFT OUTER JOIN
          dbo.Geography ON dbo.Details.YearGeoKey = dbo.Geography.YearGeoKey
 GROUP BY dbo.Details.Year, dbo.Geography.StateKey, dbo.Details.YearSpecialtyKey, dbo.Details.YearDrugKey
+;
 GO
