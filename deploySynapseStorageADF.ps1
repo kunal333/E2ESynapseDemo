@@ -22,7 +22,6 @@ $adminlogin = $servername+"admin"
 $path = Get-Location
 $ContainerName = "cms-part-d-prescriber"
 
-
 # Functions
 
 Function Set-resourceGroupName {
