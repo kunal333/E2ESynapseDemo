@@ -1,0 +1,62 @@
+﻿State,State Name,State Type
+AA,Armed Forces Central/South America,Other
+AE,Armed Forces Europe,Other
+AK,Alaska,US States
+AL,Alabama,US States
+AP,Armed Forces Pacific,Other
+AR,Arkansas,US States
+AS,American Samoa,Other
+AZ,Arizona,US States
+CA,California,US States
+CO,Colorado,US States
+CT,Connecticut,US States
+DC,District of Columbia,US States
+DE,Delaware,US States
+FL,Florida,US States
+GA,Georgia,US States
+GU,Guam,Other
+HI,Hawaii,US States
+IA,Iowa,US States
+ID,Idaho,US States
+IL,Illinois,US States
+IN,Indiana,US States
+KS,Kansas,US States
+KY,Kentucky,US States
+LA,Louisiana,US States
+MA,Massachusetts,US States
+MD,Maryland,US States
+ME,Maine,US States
+MI,Michigan,US States
+MN,Minnesota,US States
+MO,Missouri,US States
+MP,North Mariana Islands,Other
+MS,Mississippi,US States
+MT,Montana,US States
+NC,North Carolina,US States
+ND,North Dakota,US States
+NE,Nebraska,US States
+NH,New Hampshire,US States
+NJ,New Jersey,US States
+NM,New Mexico,US States
+NV,Nevada,US States
+NY,New York,US States
+OH,Ohio,US States
+OK,Oklahoma,US States
+OR,Oregon,US States
+PA,Pennsylvania,US States
+PR,Puerto Rico,Other
+RI,Rhode Island,US States
+SC,South Carolina,US States
+SD,South Dakota,US States
+TN,Tennessee,US States
+TX,Texas,US States
+UT,Utah,US States
+VA,Virginia,US States
+VI,Virgin Islands,Other
+VT,Vermont,US States
+WA,Washington,US States
+WI,Wisconsin,US States
+WV,West Virginia,US States
+WY,Wyoming,US States
+XX,Unknown,Other
+ZZ,Foreign Country,Other
