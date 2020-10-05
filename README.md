@@ -3,22 +3,22 @@
 The purpose of the script is to automate the deployment process for spinning up demo environment to host CMS data in Synapse Analytics. The script takes care of deploying Resources in Azure like Synapse Analytics, Azure Data Factory and Azure Data Lake Storage. It also downloads Healthcare based CMS data and loads into Synapse database.  This CMS data is then used for reporting using PowerBI.
 
 **The Main script works in following steps:**
-1. Prompts User for Resource Group Name and SQL Pool Password
+1. Prompts User for Resource Group Name and Password
 2. Presets various variables like SQL Server Name, Azure Data Factory Name, Storage Name, etc. using Resource Group Name provided in Step 1.
 3. Creates SQL Server
 4. Creates Synaspe (SQL Pool)
-5. Gets your Public IP so we can set in the Synapse Firewall
+5. Gets your Public IP so it can configured in the Synapse Firewall
 6. Sets the Firewall Rules for Synapse
 7. Creates Azure Data Factory
-8. Creates Storage Account
-9. Creates Storage Containersfor the CMS data
-10. Creates parameters file for the ADF ARM Template
-11. Deploys ADF ARM Template with the parameters file created in previous step
+8. Creates Azure Data Lake Storage Account
+9. Creates Storage Containers for the CMS data
+10. Creates parameters file for the Azure Data Factory ARM Template
+11. Deploys Azure Data Factory ARM Template that contains,pipelines, datasets and dataflows
 12. Gets Storage Access Key
 13. Gets Connection String for the Synapse Pool
 14. Creates Tables and Views in Synapse using script synapseCMSddls.sql
-15. Downloads CMS data from website cms.gov and saves into the Storage
-16. Executes ADF pipelines that loads the CMS Data from Storage into Synapse
+15. Downloads CMS PartD data from website https://www.cms.gov/ and saves into the Storage
+16. Executes Azure Data Factory pipelines that reads CMS Data from Storage and loads into SQL Pool (Synapse)
 17. Next step is to get the PowerBI tempate and connect to the Synapse instance.
 
 **Pre-requisites:**
