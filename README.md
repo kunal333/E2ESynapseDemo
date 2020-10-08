@@ -1,6 +1,6 @@
-## CMS Demo using Azure Synapse, Azure Data Factory and PowerBI
+## CMS Demo using Azure Synapse, Azure Data Factory and Power BI
 
-The purpose of the script is to automate the deployment process for spinning up demo environment to host CMS data in Synapse Analytics. The script takes care of deploying Resources in Azure like Synapse Analytics, Azure Data Factory and Azure Data Lake Storage. It also downloads Healthcare based CMS data and loads into Synapse database.  This CMS data is then used for reporting using PowerBI.
+The purpose of the script is to automate the deployment process for spinning up demo environment to host CMS data in Synapse Analytics. The script takes care of deploying Resources in Azure like Synapse Analytics, Azure Data Factory and Azure Data Lake Storage. It also downloads Healthcare based CMS data and loads into Synapse database.  This CMS data is then used for reporting using Power BI.
 
 **The Main script works in following steps:**
 1. Prompts User for Resource Group Name and Password
@@ -19,7 +19,7 @@ The purpose of the script is to automate the deployment process for spinning up 
 14. Creates Tables and Views in Synapse using script synapseCMSddls.sql
 15. Downloads CMS PartD data from website https://www.cms.gov/ and saves into the Storage
 16. Executes Azure Data Factory pipelines that reads CMS Data from Storage and loads into SQL Pool (Synapse)
-17. Next step is to get the PowerBI tempate and connect to the Synapse instance.
+17. Next step is to get the Power BI tempate and connect to the Synapse instance.
 
 **Pre-requisites:**
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
