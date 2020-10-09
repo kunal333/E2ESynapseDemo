@@ -8,19 +8,10 @@ Write-Host "Script started at" + $currentTime
 #Get-AzSubscription
 #Set-AzContext -SubscriptionName <subscription name>
 
-#Get Urer Input
-$resourceGroupName = Read-Host "Enter Resource Group Name"
-$password = Read-Host "Enter SQL Server Password" #-assecurestring
 
 #Default variables
-$servername = $resourceGroupName.ToLower()+"server"
-$database = $resourceGroupName.ToLower()+"pool"
-$DataFactoryName = $resourceGroupName.ToLower()+"adf"
-$storageName = $resourceGroupName.ToLower()+"storage"
 $location = "westus2"
-$adminlogin = $servername+"admin"
 $path = Get-Location
-$ContainerName = "cms-part-d-prescriber"
 
 # Functions
 
@@ -28,8 +19,7 @@ Function Set-resourceGroupName {
     Write-Host  "Step 1/15: Creating Resource Group: $resourceGroupName" 
     Write-Host "Note:All subsequent resources will be created inside this Resource Group"
 
-    $rgInstance = Get-AzResourceGroup -Name $resourceGroupName `
-        -ErrorAction SilentlyContinue
+    $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
     if ($rgInstance)
     {
         Write-Host "Resource Group Name already exists"
@@ -56,6 +46,9 @@ Function Set-SQLServer {
     }
     else 
     {
+        #Get User Input
+        $script:adminlogin = Read-Host "Enter SQL Server Administrator Name"
+        $script:password = Read-Host "Enter SQL Server Password" #-assecurestring
         New-AzSqlServer -ResourceGroupName $resourceGroupName -ServerName $servername -Location $location -SqlAdministratorCredentials $(New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminlogin, $(ConvertTo-SecureString -String $password -AsPlainText -Force))
     }
 }
@@ -83,7 +76,8 @@ function Get-yourPublicIP {
 }
 
 Function Set-FirewallRule {
-
+    Get-yourPublicIP
+    
     Write-Host  "Step 4/15: Setting the Firewall Rules for Synapse"
     
     $clientIPRuleName = "ClientIP-"+$ipaddr
@@ -100,13 +94,13 @@ Function Set-FirewallRule {
 
 Function Set-DataFactory {
 
-    Write-Host  "Step 10/15: Creating Azure Data Factory: $DataFactoryName"
+    Write-Host  "Step 8/15: Creating Azure Data Factory: $DataFactoryName"
 
     $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
    if ($adfInstance)
    {
        Write-Host "ADF Name already exists"
-       $script:adfName = Read-Host "Enter ADF Name"
+       $script:DataFactoryName = Read-Host "Enter ADF Name"
        Set-DataFactory
    }
    else {
@@ -130,17 +124,17 @@ Function Set-StorageName {
    }
 }
 
-Function Set-ContainerAndSAS {
+Function Set-Container {
 
     Write-Host  "Step 7/15: Creating Storage Containers $ContainerName and Staging for the CMS data"
-
     $script:context = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageName).context
 
-    New-AzStorageContainer -Context $context -Name $ContainerName -Permission Off
+    New-AzStorageContainer -Context $context -Name "cms-part-d-prescriber" -Permission Off
     New-AzStorageContainer -Context $context -Name "staging" -Permission Off
-    $StartTime = Get-Date
-    $EndTime = $startTime.AddHours(10.0)
-    $script:sasToken = New-AzStorageAccountSASToken -Context $context -Service Blob,File,Table,Queue -ResourceType Service,Container,Object -Permission racwdlup -StartTime $StartTime -ExpiryTime $EndTime
+
+#    $StartTime = Get-Date
+#    $EndTime = $startTime.AddHours(24.0)
+#    $script:sasToken = New-AzStorageAccountSASToken -Context $context -Service Blob,File,Table,Queue -ResourceType Service,Container,Object -Permission racwdlup -StartTime $StartTime -ExpiryTime $EndTime
 
 }
 
@@ -190,17 +184,17 @@ Function Set-DeployADFARMTemplate {
 }
 
 Function Get-StorageKey {
-    
-    Write-Host  "Step 8/15: Getting Storage Access Key"
+  
+    Write-Host  "Step 9/15: Getting Storage Access Key"
 
     $script:storageKey1 = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageName -ListKerbKey)[0].Value
 }
 
 Function Get-ConnectionString {
     
-    Write-Host  "Step 9/15: Getting Connection String for the Synapse Pool"
+    Write-Host  "Step 10/15: Getting Connection String for the Synapse Pool"
 
-    $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password="+$password+";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Encrypt=True;Connection Timeout=30;"
 }
 
 Function Set-SynapseDDLs {
@@ -354,22 +348,165 @@ Function Set-ScaleDownSynapse {
     Write-Host "Synapse Scale down has finished to DW100c" -foregroundcolor "Green"
 }
 
+while ($true) {
+    $resourceGroupCheck = Read-Host "Do you need to create a new Resource Group for this project?  Enter 1 for Yes 2 for No"
+
+        if ($resourceGroupCheck -eq 1)
+        {
+            $script:resourceGroupName = Read-Host "Enter New Resource Group Name"
+            Set-resourceGroupName
+            break
+        }
+        elseif ($resourceGroupCheck -eq 2) {
+            while ($true) {
+                $script:resourceGroupName = Read-Host "Enter Existing Resource Group Name"
+                $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
+                if ($rgInstance){
+                    break
+                }
+                else {
+                    Write-Host "$resourceGroupName Resource Group name does't exists"
+                }
+            }
+            break
+        }
+        else {
+            Write-Host "Enter either 1 or 2"
+        }
+}
+
+while ($true) {
+    $SQLCheck = Read-Host "Do you need to create a new SQL Server for this project?  Enter 1 for Yes 2 for No"
+
+        if ($SQLCheck -eq 1)
+        {
+            $servername = Read-Host "Enter New SQL Server Name"
+            $script:servername = $servername.ToLower()
+            Set-SQLServer
+            Set-FirewallRule
+            break
+        }
+        elseif ($SQLCheck -eq 2) {
+            while ($true) {
+                $servername = Read-Host "Enter Existing SQL Server Name"
+                $script:servername = $servername.ToLower()
+                $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
+                if ($serverInstance){
+                    Set-FirewallRule
+                    break
+                }
+                else {
+                    Write-Host "$servername SQL Server name does't exists"
+                }
+            }
+            break
+        }
+        else {
+            Write-Host "Enter either 1 or 2"
+        }
+}
+
+while ($true) {
+    $SQLPoolCheck = Read-Host "Do you need to create a new SQL Pool (Synapse) for this project?  Enter 1 for Yes 2 for No"
+
+        if ($SQLPoolCheck -eq 1)
+        {
+            $database = Read-Host "Enter New SQL Pool Name"
+            $script:database = $database.ToLower()
+            Set-SQLPool
+            break
+        }
+        elseif ($SQLPoolCheck -eq 2) {
+            while ($true) {
+                $database = Read-Host "Enter Existing SQL Pool Name"
+                $script:database = $database.ToLower()
+                $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
+                if ($dbInstance) 
+                {
+                    break
+                }
+                else {
+                    Write-Host "$database SQL Pool name does't exists"
+                }
+            }
+            break
+        }
+        else {
+            Write-Host "Enter either 1 or 2"
+        }
+}
+
+while ($true) {
+    $StorageCheck = Read-Host "Do you need to create a new Storage for this project?  Enter 1 for Yes 2 for No"
+
+        if ($StorageCheck -eq 1)
+        {
+            $storageName = Read-Host "Enter New Storage Name"
+            $script:storageName = $storageName.ToLower()
+            Set-StorageName
+            Set-Container
+            break
+        }
+        elseif ($StorageCheck -eq 2) {
+            while ($true) {
+                $storageName = Read-Host "Enter Existing Storage Name"
+                $script:storageName = $storageName.ToLower()
+                $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageName  -ErrorAction SilentlyContinue
+                if ($storageInstance)
+                {
+                    Set-Container
+                    break
+                }
+                else {
+                    Write-Host "$storageName Storage name does't exists"
+                }
+            }
+            break
+        }
+        else {
+            Write-Host "Enter either 1 or 2"
+        }
+}
+
+while ($true) {
+    $ADFCheck = Read-Host "Do you need to create a new Azure Data Factory for this project?  Enter 1 for Yes 2 for No"
+
+        if ($ADFCheck -eq 1)
+        {
+            $DataFactoryName = Read-Host "Enter New Azure Data Factory Name"
+            $script:DataFactoryName = $DataFactoryName.ToLower()
+            Set-DataFactory
+            break
+        }
+        elseif ($ADFCheck -eq 2) {
+            while ($true) {
+                $DataFactoryName = Read-Host "Enter Existing Azure Data Factory Name"
+                $script:DataFactoryName = $DataFactoryName.ToLower()
+                $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
+                if ($adfInstance)
+                {
+                    break
+                }
+                else {
+                    Write-Host "$DataFactoryName Azure Data Factory name does't exists"
+                }
+            }
+            break
+        }
+        else {
+            Write-Host "Enter either 1 or 2"
+        }
+}
+
+
 # Call Functions
-Set-resourceGroupName
-Set-SQLServer
-Get-yourPublicIP
-Set-FirewallRule
-Set-SQLPool
-Set-StorageName
-Set-ContainerAndSAS
 Get-StorageKey
 Get-ConnectionString
-Set-DataFactory
 Set-ParametersFile
 Set-DeployADFARMTemplate
 Get_CMSData
-Set-SynapseDDLs
-Set-LoadSynapseTables
+#Set-SynapseDDLs
+#Set-LoadSynapseTables
 Set-ScaleDownSynapse
 
 #Set-CleanUp
