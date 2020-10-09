@@ -65,7 +65,7 @@ Function Set-SQLPool {
         Set-SQLPool
     }
     else {
-        New-AzSqlDatabase -ResourceGroupName $resourcegroupname -ServerName $servername -DatabaseName $database  -Edition "DataWarehouse" -RequestedServiceObjectiveName "DW400c" -CollationName "SQL_Latin1_General_CP1_CI_AS" -MaxSizeBytes 10995116277760
+        New-AzSqlDatabase -ResourceGroupName $resourcegroupname -ServerName $servername -DatabaseName $database  -Edition "DataWarehouse" -RequestedServiceObjectiveName "DW200c" -CollationName "SQL_Latin1_General_CP1_CI_AS" -MaxSizeBytes 10995116277760
     }
 }
 
@@ -343,7 +343,7 @@ Function Set-LoadSynapseTables {
 }
 
 Function Set-ScaleDownSynapse {
-    Write-Host "Synapse Scale down has started from DW400c to DW100c" -foregroundcolor "Yellow"
+    Write-Host "Synapse Scale down has started from DW200c to DW100c" -foregroundcolor "Yellow"
     Set-AzSqlDatabase -ResourceGroupName $resourceGroupName -DatabaseName $database -ServerName $servername -RequestedServiceObjectiveName "DW100c"
     Write-Host "Synapse Scale down has finished to DW100c" -foregroundcolor "Green"
 }
