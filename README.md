@@ -19,7 +19,7 @@ The purpose of the script is to automate the deployment process for spinning up 
 14. Creates Tables and Views in Synapse using script synapseCMSddls.sql
 15. Downloads CMS PartD data from website https://www.cms.gov/ and saves into the Storage
 16. Executes Azure Data Factory pipelines that reads CMS Data from Storage and loads into SQL Pool (Synapse)
-17. Next step is to get the Power BI tempate and connect to the Synapse instance.
+17. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU 
 
 **Pre-requisites:**
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
