@@ -21,6 +21,8 @@ The purpose of the script is to automate the deployment process for spinning up 
 16. Executes Azure Data Factory pipelines that reads CMS Data from Storage and loads into SQL Pool (Synapse)
 17. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU 
 
+![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/Dashboard%20Image.png)
+
 **Pre-requisites:**
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
 2. Install Azure PowerShell version 4.7.0 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-4.7.0)
