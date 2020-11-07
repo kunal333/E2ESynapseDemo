@@ -12,6 +12,7 @@ Write-Host "Script started at" + $currentTime
 #Default variables
 $location = "westus2"
 $path = Get-Location
+$ContainerName = "cms-part-d-prescriber"
 
 # Functions
 
@@ -47,8 +48,6 @@ Function Set-SQLServer {
     else 
     {
         #Get User Input
-        $script:adminlogin = Read-Host "Enter SQL Server Administrator Name"
-        $script:password = Read-Host "Enter SQL Server Password" #-assecurestring
         New-AzSqlServer -ResourceGroupName $resourceGroupName -ServerName $servername -Location $location -SqlAdministratorCredentials $(New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminlogin, $(ConvertTo-SecureString -String $password -AsPlainText -Force))
     }
 }
@@ -197,15 +196,7 @@ Function Get-ConnectionString {
     $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Encrypt=True;Connection Timeout=30;"
 }
 
-Function Set-SynapseDDLs {
-
-    Write-Host  "Step 14/15: Creating Tables and Views in Synapse"
-
-    $synapseSqlName = $servername+".database.windows.net"
-    Invoke-Sqlcmd -InputFile "$path/synapseCMSddls.sql" -ServerInstance $synapseSqlName -Database $database -Username $adminlogin -Password $password
-}
-
-Function Get_CMSData {
+Function Get-CMSData {
 
     Write-Host "Step 13/15: Downloading CMS data from website and saving into ADLS"
 
@@ -249,6 +240,13 @@ Function Get_CMSData {
     
     Write-Host "All CMS files needed for the demo saved in the Storage Account: $storageName"
 
+}
+Function Set-SynapseDDLs {
+
+    Write-Host  "Step 14/15: Creating Tables and Views in Synapse"
+
+    $synapseSqlName = $servername+".database.windows.net"
+    Invoke-Sqlcmd -InputFile "$path/synapseCMSddls.sql" -ServerInstance $synapseSqlName -Database $database -Username $adminlogin -Password $password
 }
 
 Function Set-LoadSynapseTables {
@@ -349,153 +347,179 @@ Function Set-ScaleDownSynapse {
 }
 
 while ($true) {
-    $resourceGroupCheck = Read-Host "Do you need to create a new Resource Group for this project?  Enter 1 for Yes 2 for No"
+    $resourceCheck = Read-Host "Do you want to use existing resource(s) for this CMS Demo or create everything new from scratch?  Enter 1 for Existing 2 for New"
+    if ($resourceCheck -eq 2)
+    {
+        $script:resourceGroupName = Read-Host "Enter New Resource Group Name"
+        $script:adminlogin = Read-Host "Enter SQL Server Administrator Name"
+        $script:password = Read-Host "Enter SQL Server Password" #-assecurestring
+        $script:servername = $resourceGroupName.ToLower()+"server"
+        $script:database = $resourceGroupName.ToLower()+"pool"
+        $script:DataFactoryName = $resourceGroupName.ToLower()+"adf"
+        $script:storageName = $resourceGroupName.ToLower()+"storage"
+        
+        Set-resourceGroupName
+        Set-SQLServer
+        Set-FirewallRule
+        Set-SQLPool
+        Set-StorageName
+        Set-Container
+        Set-DataFactory
 
-        if ($resourceGroupCheck -eq 1)
-        {
-            $script:resourceGroupName = Read-Host "Enter New Resource Group Name"
-            Set-resourceGroupName
-            break
-        }
-        elseif ($resourceGroupCheck -eq 2) {
-            while ($true) {
-                $script:resourceGroupName = Read-Host "Enter Existing Resource Group Name"
-                $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
-                if ($rgInstance){
+        break
+    }
+    elseif ($resourceCheck -eq 1) {
+        while ($true) {
+            $resourceGroupCheck = Read-Host "Do you need to create a new Resource Group for this project?  Enter 1 for Yes 2 for No"
+
+                if ($resourceGroupCheck -eq 1)
+                {
+                    $script:resourceGroupName = Read-Host "Enter New Resource Group Name"
+                    Set-resourceGroupName
+                    break
+                }
+                elseif ($resourceGroupCheck -eq 2) {
+                    while ($true) {
+                        $script:resourceGroupName = Read-Host "Enter Existing Resource Group Name"
+                        $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
+                        if ($rgInstance){
+                            break
+                        }
+                        else {
+                            Write-Host "$resourceGroupName Resource Group name does't exists"
+                        }
+                    }
                     break
                 }
                 else {
-                    Write-Host "$resourceGroupName Resource Group name does't exists"
+                    Write-Host "Enter either 1 or 2"
                 }
-            }
-            break
         }
-        else {
-            Write-Host "Enter either 1 or 2"
-        }
-}
 
-while ($true) {
-    $SQLCheck = Read-Host "Do you need to create a new SQL Server for this project?  Enter 1 for Yes 2 for No"
+        while ($true) {
+            $SQLCheck = Read-Host "Do you need to create a new SQL Server for this project?  Enter 1 for Yes 2 for No"
 
-        if ($SQLCheck -eq 1)
-        {
-            $servername = Read-Host "Enter New SQL Server Name"
-            $script:servername = $servername.ToLower()
-            Set-SQLServer
-            Set-FirewallRule
-            break
-        }
-        elseif ($SQLCheck -eq 2) {
-            while ($true) {
-                $servername = Read-Host "Enter Existing SQL Server Name"
-                $script:servername = $servername.ToLower()
-                $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
-                if ($serverInstance){
+                if ($SQLCheck -eq 1)
+                {
+                    $servername = Read-Host "Enter New SQL Server Name"
+                    $script:servername = $servername.ToLower()
+                    Set-SQLServer
                     Set-FirewallRule
                     break
                 }
-                else {
-                    Write-Host "$servername SQL Server name does't exists"
-                }
-            }
-            break
-        }
-        else {
-            Write-Host "Enter either 1 or 2"
-        }
-}
-
-while ($true) {
-    $SQLPoolCheck = Read-Host "Do you need to create a new SQL Pool (Synapse) for this project?  Enter 1 for Yes 2 for No"
-
-        if ($SQLPoolCheck -eq 1)
-        {
-            $database = Read-Host "Enter New SQL Pool Name"
-            $script:database = $database.ToLower()
-            Set-SQLPool
-            break
-        }
-        elseif ($SQLPoolCheck -eq 2) {
-            while ($true) {
-                $database = Read-Host "Enter Existing SQL Pool Name"
-                $script:database = $database.ToLower()
-                $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
-                if ($dbInstance) 
-                {
+                elseif ($SQLCheck -eq 2) {
+                    while ($true) {
+                        $servername = Read-Host "Enter Existing SQL Server Name"
+                        $script:servername = $servername.ToLower()
+                        $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
+                        if ($serverInstance){
+                            Set-FirewallRule
+                            break
+                        }
+                        else {
+                            Write-Host "$servername SQL Server name does't exists"
+                        }
+                    }
                     break
                 }
                 else {
-                    Write-Host "$database SQL Pool name does't exists"
+                    Write-Host "Enter either 1 or 2"
                 }
-            }
-            break
         }
-        else {
-            Write-Host "Enter either 1 or 2"
-        }
-}
 
-while ($true) {
-    $StorageCheck = Read-Host "Do you need to create a new Storage for this project?  Enter 1 for Yes 2 for No"
+        while ($true) {
+            $SQLPoolCheck = Read-Host "Do you need to create a new SQL Pool (Synapse) for this project?  Enter 1 for Yes 2 for No"
 
-        if ($StorageCheck -eq 1)
-        {
-            $storageName = Read-Host "Enter New Storage Name"
-            $script:storageName = $storageName.ToLower()
-            Set-StorageName
-            Set-Container
-            break
-        }
-        elseif ($StorageCheck -eq 2) {
-            while ($true) {
-                $storageName = Read-Host "Enter Existing Storage Name"
-                $script:storageName = $storageName.ToLower()
-                $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageName  -ErrorAction SilentlyContinue
-                if ($storageInstance)
+                if ($SQLPoolCheck -eq 1)
                 {
+                    $database = Read-Host "Enter New SQL Pool Name"
+                    $script:database = $database.ToLower()
+                    Set-SQLPool
+                    break
+                }
+                elseif ($SQLPoolCheck -eq 2) {
+                    while ($true) {
+                        $database = Read-Host "Enter Existing SQL Pool Name"
+                        $script:database = $database.ToLower()
+                        $dbInstance = Get-AzSqlDatabase -ResourceGroupName $resourceGroupName -ServerName $servername -DatabaseName $database -ErrorAction SilentlyContinue
+                        if ($dbInstance) 
+                        {
+                            break
+                        }
+                        else {
+                            Write-Host "$database SQL Pool name does't exists"
+                        }
+                    }
+                    break
+                }
+                else {
+                    Write-Host "Enter either 1 or 2"
+                }
+        }
+
+        while ($true) {
+            $StorageCheck = Read-Host "Do you need to create a new Storage for this project?  Enter 1 for Yes 2 for No"
+
+                if ($StorageCheck -eq 1)
+                {
+                    $storageName = Read-Host "Enter New Storage Name"
+                    $script:storageName = $storageName.ToLower()
+                    Set-StorageName
                     Set-Container
                     break
                 }
-                else {
-                    Write-Host "$storageName Storage name does't exists"
-                }
-            }
-            break
-        }
-        else {
-            Write-Host "Enter either 1 or 2"
-        }
-}
-
-while ($true) {
-    $ADFCheck = Read-Host "Do you need to create a new Azure Data Factory for this project?  Enter 1 for Yes 2 for No"
-
-        if ($ADFCheck -eq 1)
-        {
-            $DataFactoryName = Read-Host "Enter New Azure Data Factory Name"
-            $script:DataFactoryName = $DataFactoryName.ToLower()
-            Set-DataFactory
-            break
-        }
-        elseif ($ADFCheck -eq 2) {
-            while ($true) {
-                $DataFactoryName = Read-Host "Enter Existing Azure Data Factory Name"
-                $script:DataFactoryName = $DataFactoryName.ToLower()
-                $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
-                if ($adfInstance)
-                {
+                elseif ($StorageCheck -eq 2) {
+                    while ($true) {
+                        $storageName = Read-Host "Enter Existing Storage Name"
+                        $script:storageName = $storageName.ToLower()
+                        $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageName  -ErrorAction SilentlyContinue
+                        if ($storageInstance)
+                        {
+                            Set-Container
+                            break
+                        }
+                        else {
+                            Write-Host "$storageName Storage name does't exists"
+                        }
+                    }
                     break
                 }
                 else {
-                    Write-Host "$DataFactoryName Azure Data Factory name does't exists"
+                    Write-Host "Enter either 1 or 2"
                 }
-            }
-            break
         }
-        else {
-            Write-Host "Enter either 1 or 2"
+
+        while ($true) {
+            $ADFCheck = Read-Host "Do you need to create a new Azure Data Factory for this project?  Enter 1 for Yes 2 for No"
+
+                if ($ADFCheck -eq 1)
+                {
+                    $DataFactoryName = Read-Host "Enter New Azure Data Factory Name"
+                    $script:DataFactoryName = $DataFactoryName.ToLower()
+                    Set-DataFactory
+                    break
+                }
+                elseif ($ADFCheck -eq 2) {
+                    while ($true) {
+                        $DataFactoryName = Read-Host "Enter Existing Azure Data Factory Name"
+                        $script:DataFactoryName = $DataFactoryName.ToLower()
+                        $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
+                        if ($adfInstance)
+                        {
+                            break
+                        }
+                        else {
+                            Write-Host "$DataFactoryName Azure Data Factory name does't exists"
+                        }
+                    }
+                    break
+                }
+                else {
+                    Write-Host "Enter either 1 or 2"
+                }
         }
+        break
+    }
 }
 
 
@@ -504,7 +528,7 @@ Get-StorageKey
 Get-ConnectionString
 Set-ParametersFile
 Set-DeployADFARMTemplate
-Get_CMSData
+Get-CMSData
 #Set-SynapseDDLs
 #Set-LoadSynapseTables
 Set-ScaleDownSynapse
