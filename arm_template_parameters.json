@@ -6,7 +6,7 @@
             "value": "cmsdemo2adf"
         },
         "AzureDataLakeStorage1_accountKey": {
-            "value": "Oc3N0uYtHMRaSBfCiELV7oSevdaV+RWwFxmRwhJyN7KMF++MagdWT4QT3udKLs4aBbWQu8llXpU/2C8ZVy7BZg=="
+            "value": ""
         },
         "cmsdemopool_connectionString": {
             "value": "data source=cmsdemo2server.database.windows.net;Initial Catalog=cmsdemo2pool;Encrypt=True;Connection Timeout=30;"
