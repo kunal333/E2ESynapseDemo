@@ -25,9 +25,8 @@ The purpose of the script is to automate the deployment process for spinning up 
 
 ## Pre-requisites:
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
-2. Install Azure PowerShell version 4.7.0 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-4.7.0)
-3. Install Powershell Module SQLServer (Reference Link: https://docs.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver15)
-4. Access to the Azure Portal to be able to create resources
+2. Install Powershell Module SQLServer (Reference Link: https://docs.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver15)
+3. Access to the Azure Portal to be able to create resources
 
 ## How to use the script:
 1. Clone Git repository local
