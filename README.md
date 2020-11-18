@@ -23,8 +23,9 @@ The purpose of the script is to automate the deployment process for spinning up 
 
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/Dashboard%20Image.png)
 
-
 ![Source to Target](https://github.com/kunal333/E2ESynapseDemo/blob/master/Source%20to%20Target.png)
+
+![Denormalized and Derived](https://github.com/kunal333/E2ESynapseDemo/blob/master/DimsDerived.png)
 
 ## Pre-requisites:
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
