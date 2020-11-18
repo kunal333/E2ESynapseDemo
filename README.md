@@ -23,18 +23,26 @@ The purpose of the script is to automate the deployment process for spinning up 
 
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/Dashboard%20Image.png)
 
-**Pre-requisites:** 
+## Pre-requisites:
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
-2. Install Azure PowerShell version 4.7.0 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-4.7.0)
-3. Install Powershell Module SQLServer (Reference Link: https://docs.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver15)
-4. Access to the Azure Portal to be able to create resources
+2. Install Powershell Module SQLServer (Reference Link: https://docs.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver15)
+3. Access to the Azure Portal to be able to create resources
 
-**How to use the script:**
+## How to use the script:
 1. Clone Git repository local
 2. Open Powershell and navigate to the git folder
 3. Execute the script deploySynapseStorageADF.ps1 from Powershell, example `./deploySynapseStorageADF.ps1`
 
-**Things to note:**
+## Things to note:
 1. If you're on a VPN, you might have to add your IP address to the SQLPool Firewall settings in Azure Portal manually in order to connect to Synapse instance.
 2. You might have to also enable flag in SQLPool Firewall settings to be able to allow Polybase "Allow Azure services and resources to access this server"
 3. SQL Script synapseCMSddls.sql does reset the Master Key but you can overwrite Master Key Password in Synapse `ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = '<Password>'"`.
+
+## Contributing
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
+with any additional questions or comments.
+
+## License
+Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
