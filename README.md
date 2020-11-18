@@ -5,6 +5,8 @@ If you belong to one of the below categories, you have landed at the right place
 1. If you are new to Azure Synapse and/or Azure Data Factory or just getting started.
 2. If you are looking to set up a Data Warehousing demo environment using Azure Synapse, Azure Data Factory and PowerBI in just 4 steps.
 3. If you are interested in reporting on Centers for Medicare and Medicaid Services (CMS) data with Azure Synpase and PowerBI.
+4. If you are interested in testing an ARM template that deploys multiple Azure Data tools for an end-to-end solution.
+5. If you want to explore a Power BI solution over Azure Synapse that uses a Composite Model with Aggregations and Materialized Views.
 
 #### Purpose
 The purpose of this project is to 1) automate the deployment of Azure Resources (Azure Resource Group, Azure Data Lake Storage, Azure Synapse and Azure Data Factory) 2) automate downloading CMS data from https://cms.gov and load into Azure Synapse Tables. This CMS data can then be used for reporting using Power BI.
@@ -36,28 +38,11 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/EnterDetails.png)
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
-### Architectures and Useful Images:
-**Reference Architecture**
-![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/MDW.png)
-
-**Data Flow Architecture**
-![Source to Target](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Source%20to%20Target.png)
-
-**Dimensional Data Model**
-![Denormalized and Derived](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/DimsDerived.png)
-
-**Logical Model**
-![Image of Logical Model](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Logical%20Model.png)
-
-**PowerBI Dashboard**
-![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
-
-**PowerBI Calculations**
-![Image of Calculations](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Calculations.png)
-
+### Architectures
+All related Architectures and PowerBI dashboard images can be found <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/Architectures.md" title="Architectures">here</a>
 
 ### Script Explained
-If you're intereted to learn step by step process how the deployment script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
+Step by step process how the deployment script performs is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
 
 ### Contributing
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
