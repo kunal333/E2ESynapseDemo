@@ -46,8 +46,14 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 **Dimensional Data Model**
 ![Denormalized and Derived](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/DimsDerived.png)
 
+**Logical Model**
+![Image of Logical Model](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Logical%20Model.png)
+
 **PowerBI Dashboard**
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
+
+**PowerBI Calculations**
+![Image of Calculations](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Calculations.png)
 
 
 ### Script Explained
