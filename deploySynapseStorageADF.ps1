@@ -193,7 +193,8 @@ Function Get-ConnectionString {
     
     Write-Host  "Step 10/15: Getting Connection String for the Synapse Pool"
 
-    $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Encrypt=True;Connection Timeout=30;"
+#    $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Encrypt=True;Connection Timeout=30;"
+    $script:SQLPoolconnectionString = "data source="+$servername+".database.windows.net;Initial Catalog="+$database+";Persist Security Info=False;User ID="+$adminlogin+";Password="+$password+";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 }
 
 Function Get-CMSData {
@@ -262,7 +263,7 @@ Function Set-LoadSynapseTables {
         $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $i
         $myArray1.Add($runId)
     }
-    foreach ($element in $myArray1) {$element}
+#    foreach ($element in $myArray1) {$element}
     foreach ($element in $myArray1) {
         while ($True) {
 
@@ -347,8 +348,8 @@ Function Set-ScaleDownSynapse {
 }
 
 while ($true) {
-    $resourceCheck = Read-Host "Do you want to use existing resource(s) for this CMS Demo or create everything new from scratch?  Enter 1 for Existing 2 for New"
-    if ($resourceCheck -eq 2)
+    $resourceCheck = Read-Host "Do you want to use existing resource(s) for this CMS Demo or create everything new from scratch?  Enter 1 for New or 2 for Existing"
+    if ($resourceCheck -eq 1)
     {
         $script:resourceGroupName = Read-Host "Enter New Resource Group Name"
         $script:adminlogin = Read-Host "Enter SQL Server Administrator Name"
@@ -368,7 +369,7 @@ while ($true) {
 
         break
     }
-    elseif ($resourceCheck -eq 1) {
+    elseif ($resourceCheck -eq 2) {
         while ($true) {
             $resourceGroupCheck = Read-Host "Do you need to create a new Resource Group for this project?  Enter 1 for Yes 2 for No"
 
@@ -397,12 +398,14 @@ while ($true) {
         }
 
         while ($true) {
-            $SQLCheck = Read-Host "Do you need to create a new SQL Server for this project?  Enter 1 for Yes 2 for No"
+            $SQLCheck = Read-Host "Do you need to create a new SQL Server for this project?  Enter 1 for Yes or 2 for No"
 
                 if ($SQLCheck -eq 1)
                 {
                     $servername = Read-Host "Enter New SQL Server Name"
                     $script:servername = $servername.ToLower()
+                    $script:adminlogin = Read-Host "Enter SQL Server Administrator Name"
+                    $script:password = Read-Host "Enter SQL Server Password"
                     Set-SQLServer
                     Set-FirewallRule
                     break
@@ -411,6 +414,8 @@ while ($true) {
                     while ($true) {
                         $servername = Read-Host "Enter Existing SQL Server Name"
                         $script:servername = $servername.ToLower()
+                        $script:adminlogin = Read-Host "Enter SQL Server Administrator Name"
+                        $script:password = Read-Host "Enter SQL Server Password"
                         $serverInstance = Get-AzSqlServer -ServerName $servername -ErrorAction SilentlyContinue
                         if ($serverInstance){
                             Set-FirewallRule
@@ -428,7 +433,7 @@ while ($true) {
         }
 
         while ($true) {
-            $SQLPoolCheck = Read-Host "Do you need to create a new SQL Pool (Synapse) for this project?  Enter 1 for Yes 2 for No"
+            $SQLPoolCheck = Read-Host "Do you need to create a new SQL Pool (Synapse) for this project?  Enter 1 for Yes or 2 for No"
 
                 if ($SQLPoolCheck -eq 1)
                 {
@@ -458,7 +463,7 @@ while ($true) {
         }
 
         while ($true) {
-            $StorageCheck = Read-Host "Do you need to create a new Storage for this project?  Enter 1 for Yes 2 for No"
+            $StorageCheck = Read-Host "Do you need to create a new Storage for this project?  Enter 1 for Yes or 2 for No"
 
                 if ($StorageCheck -eq 1)
                 {
@@ -490,7 +495,7 @@ while ($true) {
         }
 
         while ($true) {
-            $ADFCheck = Read-Host "Do you need to create a new Azure Data Factory for this project?  Enter 1 for Yes 2 for No"
+            $ADFCheck = Read-Host "Do you need to create a new Azure Data Factory for this project?  Enter 1 for Yes or 2 for No"
 
                 if ($ADFCheck -eq 1)
                 {
@@ -529,10 +534,9 @@ Get-ConnectionString
 Set-ParametersFile
 Set-DeployADFARMTemplate
 Get-CMSData
-#Set-SynapseDDLs
-#Set-LoadSynapseTables
+Set-SynapseDDLs
+Set-LoadSynapseTables
 Set-ScaleDownSynapse
-
 #Set-CleanUp
 
 $currentTime = Get-Date
