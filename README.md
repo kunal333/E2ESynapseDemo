@@ -36,18 +36,19 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/EnterDetails.png)
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
-### Useful Diagrams:
+### Architectures and Useful Images:
 **Reference Architecture**
 ![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/MDW.png)
-
-**PowerBI Dashboard**
-![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
 
 **Data Flow Architecture**
 ![Source to Target](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Source%20to%20Target.png)
 
 **Dimensional Data Model**
 ![Denormalized and Derived](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/DimsDerived.png)
+
+**PowerBI Dashboard**
+![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
+
 
 ## Script Explained
 If you're intereted to learn step by step process how the deployment script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
