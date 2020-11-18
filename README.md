@@ -1,13 +1,13 @@
 ## CMS Demo using Azure Synapse, Azure Data Factory and Power BI
 
-**Audience** 
+#### Audience
 If you belong to one of the below categories, you have landed at the right place!
-1. If you are just getting started with Azure Synapse and/or Azure Data Factory.
+1. If you are new to Azure Synapse and/or Azure Data Factory or just getting started.
 2. If you are looking to set up a Data Warehousing demo environment using Azure Synapse, Azure Data Factory and PowerBI in just 4 steps.
-3. If you are interested in trying Centers for Medicare and Medicaid Services (CMS) data on Synpase.
+3. If you are interested in reporting on Centers for Medicare and Medicaid Services (CMS) data with Azure Synpase and PowerBI.
 
-**Purpose** 
-The purpose of this project is to 1) automate the deployment of Azure Resources (Azure Data Lake Storage, Azure Synapse and Azure Data Factory) 2) automate downloading CMS data from https://cms.gov and loads into Azure Synapse Tables. This CMS data can then be used for reporting using Power BI.
+#### Purpose
+The purpose of this project is to 1) automate the deployment of Azure Resources (Azure Resource Group, Azure Data Lake Storage, Azure Synapse and Azure Data Factory) 2) automate downloading CMS data from https://cms.gov and loads into Azure Synapse Tables. This CMS data can then be used for reporting using Power BI.
 
 ## Pre-requisites:
 Azure Account with permissions to create Azure Resources (Storage, Azure Data Factory, Synapse)
