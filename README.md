@@ -38,7 +38,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 ![Denormalized and Derived](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/DimsDerived.png)
 
 ## Script Explained
-If you're intereted to learn how the script performs, it is explained [here]((https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md)
+If you're intereted to learn how the script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
 
 ## Contributing
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
