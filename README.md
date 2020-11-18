@@ -50,7 +50,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
 
 
-## Script Explained
+### Script Explained
 If you're intereted to learn step by step process how the deployment script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
 
 ### Contributing
