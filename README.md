@@ -23,6 +23,9 @@ The purpose of the script is to automate the deployment process for spinning up 
 
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/Dashboard%20Image.png)
 
+
+![Source to Target](https://github.com/kunal333/E2ESynapseDemo/blob/master/Source%20to%20Target.png)
+
 ## Pre-requisites:
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
 2. Install Powershell Module SQLServer (Reference Link: https://docs.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver15)
