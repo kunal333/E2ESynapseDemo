@@ -22,7 +22,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     `cd E2ESynapseDemo`
 
     ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
-3. Start script and provide Resource Group Name and User credentials (Example below)
+3. Start script and provide Resource Group Name and User credentials (See example below)
     `PS /home/kunal/E2ESynapseDemo> ./deploySynapseStorageADF.ps1`
 
     `Do you want to use existing resource(s) for this CMS Demo or create everything new from scratch?  Enter 1 for New or 2 for Existing: 1`
@@ -38,7 +38,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 
 ### Useful Diagrams:
 **Reference Architecture**
-![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/ReferenceArchitecture.png)
+![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/MDW.png)
 
 **PowerBI Dashboard**
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
