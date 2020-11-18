@@ -26,7 +26,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 
 ## Useful Diagrams:
 **Reference Architecture**
-![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Reference Architecture.png)
+![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/ReferenceArchitecture.png)
 
 **PowerBI Dashboard**
 ![Image of Dashboard](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Dashboard%20Image.png)
