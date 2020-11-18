@@ -7,12 +7,12 @@ If you belong to one of the below categories, you have landed at the right place
 3. If you are interested in reporting on Centers for Medicare and Medicaid Services (CMS) data with Azure Synpase and PowerBI.
 
 #### Purpose
-The purpose of this project is to 1) automate the deployment of Azure Resources (Azure Resource Group, Azure Data Lake Storage, Azure Synapse and Azure Data Factory) 2) automate downloading CMS data from https://cms.gov and loads into Azure Synapse Tables. This CMS data can then be used for reporting using Power BI.
+The purpose of this project is to 1) automate the deployment of Azure Resources (Azure Resource Group, Azure Data Lake Storage, Azure Synapse and Azure Data Factory) 2) automate downloading CMS data from https://cms.gov and load into Azure Synapse Tables. This CMS data can then be used for reporting using Power BI.
 
-## Pre-requisites:
+### Pre-requisites:
 Azure Account with permissions to create Azure Resources (Storage, Azure Data Factory, Synapse)
 
-## 4 Easy Steps for Deployment:
+### 4 Easy Steps for Deployment:
 1. Login to Azure Portal and open Cloud Shell with Powershell prompt from the top navigation bar (see below image)
 
     ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CommandShell.png)
@@ -36,7 +36,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/EnterDetails.png)
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
-## Useful Diagrams:
+### Useful Diagrams:
 **Reference Architecture**
 ![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/ReferenceArchitecture.png)
 
@@ -52,11 +52,11 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 ## Script Explained
 If you're intereted to learn step by step process how the deployment script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
 
-## Contributing
+### Contributing
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
 with any additional questions or comments.
 
-## License
+### License
 Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
