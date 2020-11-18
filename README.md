@@ -11,7 +11,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CommandShell.png)
 2. Clone this Git Repository and switch to new directory (using commands below)
     `git clone https://github.com/kunal333/E2ESynapseDemo.git`
-    
+
     `cd E2ESynapseDemo`
 
     ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
@@ -43,7 +43,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 ![Denormalized and Derived](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/DimsDerived.png)
 
 ## Script Explained
-If you're intereted to learn how the script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
+If you're intereted to learn step by step process how the deployment script performs, it is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
 
 ## Contributing
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
