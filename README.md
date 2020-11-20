@@ -41,7 +41,9 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
 ### Architectures
-All related Architectures and PowerBI dashboard images can be found <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/Architectures.md" title="Architectures">here</a>
+Documentation for the Medicare Fee-For Service Provider Utilization & Payment Part D Prescriber Data can be found <a href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/Prescriber_Methods.pdf" title="CMS Documentation">here</a>
+
+All related Architectures for this solution and PowerBI dashboard images can be found <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/Architectures.md" title="Architectures">here</a>
 
 ### Script Explained
 Step by step process how the deployment script performs is explained <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/ScriptExplained.md" title="ScriptExplained">here</a>
