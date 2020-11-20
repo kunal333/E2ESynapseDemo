@@ -201,6 +201,36 @@ Function Get-CMSData {
 
     Write-Host "Step 13/15: Downloading CMS data from website and saving into ADLS"
 
+
+    $TablesList2 = @("Download_CMSPart13","Download_CMSPart14","Download_CMSPart15","Download_CMSPart16","Download_CMSPart17")
+    $myarray2 = [System.Collections.ArrayList]::new()
+
+    Foreach ($i in $TablesList2)
+    {
+        Write-Host "Loading Table: $i"
+        $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $i
+        $myArray2.Add($runId)
+    }
+#    foreach ($element in $myArray1) {$element}
+    foreach ($element in $myArray2) {
+        while ($True) {
+
+            $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $element
+
+            if ($run) {
+                if ($run.Status -ne 'InProgress') {
+                    Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Green"
+                    $run
+                    break
+                }
+                Write-Host  "Pipeline is running...status: InProgress... Will check again in 10 seconds" -foregroundcolor "Yellow"
+            }
+
+        Start-Sleep -Seconds 10
+        }
+    }
+
+<#
     for ($num = 13 ; $num -le 17 ; $num++)
     {
         $CMSFileName = "Download_CMSPart$num"
@@ -221,7 +251,7 @@ Function Get-CMSData {
         Start-Sleep -Seconds 15
         }
     }
-    
+ #>   
     $newRunId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName "uncompress_CMS_Files"
 
     while ($True) {
@@ -529,12 +559,12 @@ while ($true) {
 
 
 # Call Functions
-Get-StorageKey
-Get-ConnectionString
-Set-ParametersFile
-Set-DeployADFARMTemplate
+#Get-StorageKey
+#Get-ConnectionString
+#Set-ParametersFile
+#Set-DeployADFARMTemplate
 Get-CMSData
-Set-SynapseDDLs
+#Set-SynapseDDLs
 Set-LoadSynapseTables
 Set-ScaleDownSynapse
 #Set-CleanUp
