@@ -19,8 +19,8 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 
     ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CommandShell.png)
 2. Clone this Git Repository and switch to new directory (using commands below)
-    `git clone https://github.com/kunal333/E2ESynapseDemo.git`
 
+    `git clone https://github.com/kunal333/E2ESynapseDemo.git`
     `cd E2ESynapseDemo`
 
     ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
