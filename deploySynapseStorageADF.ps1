@@ -223,35 +223,13 @@ Function Get-CMSData {
                     $run
                     break
                 }
-                Write-Host  "Pipeline is running...status: InProgress... Will check again in 10 seconds" -foregroundcolor "Yellow"
+                Write-Host  "ADF Pipeline is still running... Will check progress in 15 seconds" -foregroundcolor "Yellow"
             }
-
-        Start-Sleep -Seconds 10
-        }
-    }
-
-<#
-    for ($num = 13 ; $num -le 17 ; $num++)
-    {
-        $CMSFileName = "Download_CMSPart$num"
-        $runId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName $CMSFileName
-
-        while ($True) {
-        $run = Get-AzDataFactoryV2PipelineRun -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineRunId $runId
-
-        if ($run) {
-            if ($run.Status -ne 'InProgress') {
-                Write-Host "Pipeline run finished. The status is: " $run.Status -foregroundcolor "Yellow"
-                $run
-                break
-            }
-            Write-Host  "Pipeline is running...status: InProgress" -foregroundcolor "Yellow"
-        }
 
         Start-Sleep -Seconds 15
         }
     }
- #>   
+
     $newRunId = Invoke-AzDataFactoryV2Pipeline -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -PipelineName "uncompress_CMS_Files"
 
     while ($True) {
@@ -263,7 +241,7 @@ Function Get-CMSData {
                 $run
                 break
             }
-            Write-Host  "Pipeline is running...status: InProgress" -foregroundcolor "Yellow"
+            Write-Host  "ADF Pipeline is still running... Will check progress in 15 seconds" -foregroundcolor "Yellow"
         }
 
         Start-Sleep -Seconds 15
@@ -305,7 +283,7 @@ Function Set-LoadSynapseTables {
                     $run
                     break
                 }
-                Write-Host  "Pipeline is running...status: InProgress... Will check again in 60 seconds" -foregroundcolor "Yellow"
+                Write-Host  "ADF Pipeline is still running... Will check progress in 60 seconds" -foregroundcolor "Yellow"
             }
 
         Start-Sleep -Seconds 60
@@ -333,7 +311,7 @@ Function Set-LoadSynapseTables {
                     $run
                     break
                 }
-                Write-Host  "Pipeline is running...status: InProgress... Will check again in 60 seconds" -foregroundcolor "Yellow"
+                Write-Host  "ADF Pipeline is still running... Will check progress in 60 seconds" -foregroundcolor "Yellow"
             }
 
         Start-Sleep -Seconds 60
@@ -361,7 +339,7 @@ Function Set-LoadSynapseTables {
                     $run
                     break
                 }
-                Write-Host  "Pipeline is running...status: InProgress... Will check again in 60 seconds" -foregroundcolor "Yellow"
+                Write-Host  "ADF Pipeline is still running... Will check progress in 60 seconds" -foregroundcolor "Yellow"
             }
 
         Start-Sleep -Seconds 60
@@ -559,12 +537,12 @@ while ($true) {
 
 
 # Call Functions
-#Get-StorageKey
-#Get-ConnectionString
-#Set-ParametersFile
-#Set-DeployADFARMTemplate
+Get-StorageKey
+Get-ConnectionString
+Set-ParametersFile
+Set-DeployADFARMTemplate
 Get-CMSData
-#Set-SynapseDDLs
+Set-SynapseDDLs
 Set-LoadSynapseTables
 Set-ScaleDownSynapse
 #Set-CleanUp
