@@ -262,6 +262,9 @@ Function Set-LoadSynapseTables {
 
     Write-Host "Step 15/15: Executing ADF Pipelines that loades into Synapse the CMS Data from Storage "
 
+    Write-Host "Updating IntegrationRuntime TTL to 10 minutes and CoreCount to 16"
+    Set-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -Name 'AutoResolveIntegrationRuntime' -DataFlowTimeToLive 10 -Type 'Managed' -Location 'AutoResolve' -DataFlowCoreCount 16 -DataFlowComputeType 'General' -ErrorAction SilentlyContinue -Force
+
     $TablesList1 = @("Drug","Providers","Specialty","States")
     $myarray1 = [System.Collections.ArrayList]::new()
 
