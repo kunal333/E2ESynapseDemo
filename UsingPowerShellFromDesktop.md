@@ -1,4 +1,4 @@
-Below are the steps to execute script from your desktop:
+Below are the steps to execute PowerShell script from your Desktop:
 
 1. Install Powershell version 7.0.3 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
 
