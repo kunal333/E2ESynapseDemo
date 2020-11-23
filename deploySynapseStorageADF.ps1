@@ -8,7 +8,6 @@ Write-Host "Script started at" + $currentTime
 #Get-AzSubscription
 #Set-AzContext -SubscriptionName <subscription name>
 
-
 #Default variables
 $location = "westus2"
 $path = Get-Location
