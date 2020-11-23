@@ -6,12 +6,7 @@ Below are the steps to execute PowerShell script from your Desktop:
 
 2. Once installed, open PowerShell (pwsh) as Adminstrator (in Windows) and Install **Azure PowerShell Module** version 4.7.0 or later (Reference Link: https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-4.7.0)
 
-`if ($PSVersionTable.PSEdition -eq 'Desktop' -and (Get-Module -Name AzureRM -ListAvailable)) {
-    Write-Warning -Message ('Az module not installed. Having both the AzureRM and ' +
-      'Az modules installed at the same time is not supported.')
-} else {
-    Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
-}`
+`Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force`
 
 3. Install PowerShell Module **Azure Storage** Module
 
