@@ -40,6 +40,8 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/EnterDetails.png)
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
+**Note**:If you are using Azure Portal Cloud Shell, you might see errors due to inactivity. Please ignore them as the script would continue to run in the background. Total time of end to end deployment is around 1 hour. 
+
 ### Architectures
 Documentation for the Medicare Fee-For Service Provider Utilization & Payment Part D Prescriber Data can be found <a href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/Prescriber_Methods.pdf" title="CMS Documentation">here</a>
 
