@@ -15,7 +15,7 @@ The purpose of this project is to 1) automate the deployment of Azure Resources 
 Azure Account with permissions to create Azure Resources (Storage, Azure Data Factory, Synapse)
 
 ### 4 Easy Steps to Deployment:
-1. Login to Azure Portal and open Cloud Shell from the top navigation bar (see below image). Make sure to select Powershell prompt.  Alternatively, if you want to use PowerShell from your local computer, <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/UsingPowerShellFromLocal.md" title="UsingPowerShellFromLocal">click here</a>.
+1. Login to Azure Portal and open Cloud Shell from the top navigation bar (see below image). Make sure to select Powershell prompt.  Alternatively, if you want to use PowerShell from your local machine, <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/UsingPowerShellFromLocal.md" title="UsingPowerShellFromLocal">click here</a>.
 
     ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CommandShell.png)
 2. Clone this Git Repository and switch to new directory (using commands below)
