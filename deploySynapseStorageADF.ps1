@@ -343,10 +343,10 @@ Function Set-LoadSynapseTables {
                     $run
                     break
                 }
-                Write-Host  "ADF Pipeline is still running... Will check progress in 60 seconds" -foregroundcolor "Yellow"
+                Write-Host  "ADF Pipeline is still running... Will check progress in 5 minutes" -foregroundcolor "Yellow"
             }
 
-        Start-Sleep -Seconds 60
+        Start-Sleep -Seconds 300
         }
     }
 
