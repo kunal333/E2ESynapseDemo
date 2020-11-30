@@ -1,4 +1,4 @@
-## CMS Demo using Azure Synapse, Azure Data Factory and Power BI
+## Healthcare CMS Demo using Azure Synapse, Azure Data Factory and Power BI
 
 #### Audience
 If you belong to one of the below categories, you have landed at the right place!
