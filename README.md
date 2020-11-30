@@ -2,10 +2,11 @@
 
 #### Audience
 If you belong to one of the below categories, you have landed at the right place!
-1. If you are new to Azure Synapse and/or Azure Data Factory or just getting started.
+
+1. If you are new to Azure Synapse and/or Azure Data Factory or just getting started on them.
 2. If you are looking to set up a Data Warehousing demo environment using Azure Synapse, Azure Data Factory and PowerBI in just 4 steps.
 3. If you are interested in reporting on Centers for Medicare and Medicaid Services (CMS) data with Azure Synpase and PowerBI.
-4. If you are interested in testing an ARM template that deploys multiple Azure Data tools for an end-to-end solution.
+4. If you are interested in testing a combination of PowerShell script and ARM template that deploys multiple Azure Services for an end-to-end solution.
 5. If you want to explore a Power BI solution over Azure Synapse that uses a Composite Model with Aggregations and Materialized Views.
 
 #### Purpose
