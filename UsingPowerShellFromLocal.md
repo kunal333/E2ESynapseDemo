@@ -1,6 +1,6 @@
 Below are the steps to execute PowerShell script from your Local machine:
 
-1. Install **PowerShell** version 7.1 or newer (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
+1. Install **PowerShell** version 5.1 or newer (Reference Link: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7)
 
 `$PSVersionTable`
 
