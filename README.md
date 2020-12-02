@@ -13,7 +13,7 @@ If you belong to one of the below categories, you have landed at the right place
 The purpose of this project is to 1) automate the deployment of Azure Resources (Azure Resource Group, Azure Data Lake Storage, Azure Synapse and Azure Data Factory) 2) automate downloading CMS data from https://cms.gov and load into Azure Synapse Tables. This CMS data can then be used for reporting using Power BI.
 
 ### Pre-requisites:
-Azure Account with permissions to create Azure Resources (Storage, Azure Data Factory, Synapse)
+Azure Account with permissions to create Azure Resources (Storage, Azure Data Factory, Synapse). A tutorial of deploying the Azure ARM Template is here: https://youtu.be/-YnF2EHzTzs
 
 ### 4 Easy Steps to Deployment:
 1. Login to Azure Portal and open Cloud Shell from the top navigation bar (see below image). Make sure to select PowerShell prompt.  Alternatively, if you want to use PowerShell from your local machine, <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/UsingPowerShellFromLocal.md" title="UsingPowerShellFromLocal">click here</a>.
