@@ -5,7 +5,7 @@ If you belong to one of the below categories, you have landed at the right place
 
 1. If you are new to Azure Synapse and/or Azure Data Factory or just getting started on them.
 2. If you are looking to set up a Data Warehousing environment using Azure Synapse, Azure Data Factory and PowerBI in just four steps.
-3. If you are interested in reporting on Centers for Medicare and Medicaid Services (CMS) data with Azure Synpase and PowerBI.
+3. If you are interested in reporting on Centers for Medicare and Medicaid Services (CMS) data with Azure Synapse and PowerBI.
 4. If you are interested in testing a combination of PowerShell script and ARM template that deploys multiple Azure Services for an end-to-end solution.
 5. If you want to explore a Power BI solution over Azure Synapse that uses a Composite Model with Aggregations and Materialized Views.
 
@@ -26,7 +26,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     `cd E2ESynapseDemo`
 
     ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
-3. Start script and provide Resource Group Name and User credentials (See example below)
+3. Start script and provide Resource Group Name and User credentials (See example below. **Note:** Don't use the same names in example!)
 
     `PS /home/kunal/E2ESynapseDemo> ./deploySynapseStorageADF.ps1`
 
