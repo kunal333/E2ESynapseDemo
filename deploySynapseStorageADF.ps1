@@ -203,7 +203,7 @@ Function Get-CMSData {
     Write-Host "Updating IntegrationRuntime TTL to 10 minutes and CoreCount to 16"
     Set-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $resourceGroupName -DataFactoryName $DataFactoryName -Name 'AutoResolveIntegrationRuntime' -DataFlowTimeToLive 10 -Type 'Managed' -Location 'AutoResolve' -DataFlowCoreCount 16 -DataFlowComputeType 'General' -ErrorAction SilentlyContinue -Force
 
-    $TablesList2 = @("Download_CMSPart13","Download_CMSPart14","Download_CMSPart15","Download_CMSPart16","Download_CMSPart17")
+    $TablesList2 = @("Download_CMSPart13","Download_CMSPart14","Download_CMSPart15","Download_CMSPart16","Download_CMSPart17","Download_CMSPart18")
     $myarray2 = [System.Collections.ArrayList]::new()
 
     Foreach ($i in $TablesList2)
