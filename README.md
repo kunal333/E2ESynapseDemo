@@ -1,6 +1,6 @@
 ## Healthcare CMS Demo using Azure Synapse, Azure Data Factory and Power BI
 
-UPDATE: As of 2/17/2021, a new and updated version of this solution is now available. It includes optimized ADF data flows, a more efficient dimensional design, and a new Power BI report titled 'Medicare Part D Report V2.' More info about these changes is coming soon.
+UPDATE: As of 2/17/2021, a new and updated version of this solution is now available. It includes new 2018 data (now 148M total rows), optimized ADF data flows, a more efficient dimensional design, and a new Power BI report titled 'Medicare Part D Report V2.' More info about these changes is coming soon.
 
 #### Audience
 If you belong to one of the below categories, you have landed at the right place!
