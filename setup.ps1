@@ -1,7 +1,7 @@
 $currentTime = Get-Date
 Write-Host "Script started at" + $currentTime
 
-#Connect-AzAccount -Tenant $tenantId -Subscription $subscriptionId
+Connect-AzAccount
 
 $path = Get-Location
 $getDate = Get-Date -Format "MMddyyyy"
