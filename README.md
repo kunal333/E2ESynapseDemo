@@ -20,14 +20,14 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 ### 4 Easy Steps to Deployment:
 1. Login to Azure Portal and open Cloud Shell from the top navigation bar (see below image). Make sure to select PowerShell prompt.  Alternatively, if you want to use PowerShell from your local machine, <a href="https://github.com/kunal333/E2ESynapseDemo/UsingPowerShellFromLocal.md" title="UsingPowerShellFromLocal">click here</a>.
 
-    ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/images/CommandShell.png)
+    ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CommandShell.png)
 2. Clone this Git Repository and switch to new directory (using commands below)
 
     `git clone https://github.com/kunal333/E2ESynapseDemo.git`
     
     `cd E2ESynapseDemo`
 
-    ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/images/CloneGitRepo.png)
+    ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
 3. Start script and provide Resource Group Name and User credentials (See example below. **Note:** Don't use the same names in example!)
 
     `PS /home/kunal/E2ESynapseDemo> ./deploySynapseStorageADF.ps1`
@@ -40,7 +40,7 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
 
     `Enter SQL Server Password: Passw0rd!`
 
-    ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/images/EnterDetails.png)
+    ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/EnterDetails.png)
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
 **Note**:If you are using Azure Portal Cloud Shell, you might see errors due to inactivity. Please ignore them as the script would continue to run in the background. Total time for end to end deployment is around 1 hour. 
