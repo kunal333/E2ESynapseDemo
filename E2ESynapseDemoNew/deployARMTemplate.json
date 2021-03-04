@@ -1,0 +1,3197 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name"
+        },
+        "cmsdemopool_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'cmsdemopool'"
+        },
+        "AzureDataLakeStorage1_accountKey": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_17_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_17.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_13_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_13.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_16_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_16.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_14_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_14.zip"
+        },
+        "AzureDataLakeStorage1_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://finalcmsdemostorage.dfs.core.windows.net/"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_15_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_15.zip"
+        },
+        "PartD_Prescriber_PUF_NPI_DRUG_18_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "http://download.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/Downloads/PartD_Prescriber_PUF_NPI_DRUG_18.zip"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/Download_CMSPart13')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Copy_pu3",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "HttpReadSettings",
+                                    "requestMethod": "GET"
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "CMSWebsite_part13",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "CMSZipped_Part13",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T21:37:18Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/CMSWebsite_part13')]",
+                "[concat(variables('factoryId'), '/datasets/CMSZipped_Part13')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Download_CMSPart15')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Copy_p15",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "HttpReadSettings",
+                                    "requestMethod": "GET"
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "CMSWebsite_part15",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "CMSZipped_Part15",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T21:37:18Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/CMSWebsite_part15')]",
+                "[concat(variables('factoryId'), '/datasets/CMSZipped_Part15')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/uncompress_CMS_Files')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "uncompressCMSFiles",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Source",
+                                "value": "cms-part-d-prescriber//"
+                            },
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSReadSettings",
+                                    "recursive": true,
+                                    "wildcardFileName": "*.zip",
+                                    "deleteFilesAfterCompletion": false
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings",
+                                    "compressionProperties": {
+                                        "type": "ZipDeflateReadSettings",
+                                        "preserveZipFileNameAsFolder": false
+                                    }
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings",
+                                    "maxConcurrentConnections": 10
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "ZippedCMSFiles",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "UnzippedCMSFiles",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T21:37:19Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/ZippedCMSFiles')]",
+                "[concat(variables('factoryId'), '/datasets/UnzippedCMSFiles')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Download_CMSPart14')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Copy_p14",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "HttpReadSettings",
+                                    "requestMethod": "GET"
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "CMSWebsite_part14",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "CMSZipped_Part14",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T21:37:19Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/CMSWebsite_part14')]",
+                "[concat(variables('factoryId'), '/datasets/CMSZipped_Part14')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Specialty')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Specialty",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "Specialty",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "details2017": {},
+                                    "details2016": {},
+                                    "details2015": {},
+                                    "details2014": {},
+                                    "details2013": {},
+                                    "details2018": {},
+                                    "Output": {}
+                                }
+                            },
+                            "staging": {
+                                "linkedService": {
+                                    "referenceName": "AzureDataLakeStorage1",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "folderPath": "staging"
+                            },
+                            "compute": {
+                                "coreCount": 80,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-24T04:38:28Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/Specialty')]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]",
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Providers')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Providers",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "Providers",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "details2017": {},
+                                    "details2016": {},
+                                    "details2015": {},
+                                    "details2014": {},
+                                    "details2013": {},
+                                    "details2018": {},
+                                    "Output": {}
+                                }
+                            },
+                            "staging": {
+                                "linkedService": {
+                                    "referenceName": "AzureDataLakeStorage1",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "folderPath": "staging"
+                            },
+                            "compute": {
+                                "coreCount": 80,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-24T04:32:05Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/Providers')]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]",
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/States')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "State",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "State",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "details2017": {},
+                                    "details2016": {},
+                                    "details2015": {},
+                                    "details2014": {},
+                                    "details2013": {},
+                                    "details2018": {},
+                                    "Final": {}
+                                }
+                            },
+                            "staging": {
+                                "linkedService": {
+                                    "referenceName": "AzureDataLakeStorage1",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "folderPath": "staging"
+                            },
+                            "compute": {
+                                "coreCount": 80,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T21:37:20Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/State')]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]",
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Drug')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Drugs",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "Drugs",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "details2017": {},
+                                    "details2016": {},
+                                    "details2015": {},
+                                    "details2014": {},
+                                    "details2013": {},
+                                    "details2018": {},
+                                    "Output": {}
+                                }
+                            },
+                            "staging": {
+                                "linkedService": {
+                                    "referenceName": "AzureDataLakeStorage1",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "folderPath": "staging"
+                            },
+                            "compute": {
+                                "coreCount": 48,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-24T02:52:57Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/Drugs')]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]",
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Geography')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Geography",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "Geography",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "details2017": {},
+                                    "details2016": {},
+                                    "details2015": {},
+                                    "details2014": {},
+                                    "details2013": {},
+                                    "States": {},
+                                    "details2018": {},
+                                    "Output": {}
+                                }
+                            },
+                            "staging": {
+                                "linkedService": {
+                                    "referenceName": "AzureDataLakeStorage1",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "folderPath": "staging"
+                            },
+                            "compute": {
+                                "coreCount": 80,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-24T04:13:46Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/Geography')]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]",
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Download_CMSPart16')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Copy_p16",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "HttpReadSettings",
+                                    "requestMethod": "GET"
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "CMSWebsite_part16",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "CMSZipped_Part16",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T21:37:21Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/CMSWebsite_part16')]",
+                "[concat(variables('factoryId'), '/datasets/CMSZipped_Part16')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Details')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Details",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "Details",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "details2017": {},
+                                    "details2016": {},
+                                    "details2015": {},
+                                    "details2014": {},
+                                    "details2013": {},
+                                    "Geo": {},
+                                    "Providers": {},
+                                    "Specialty": {},
+                                    "Drugs": {},
+                                    "details2018": {},
+                                    "FinalDetails": {}
+                                }
+                            },
+                            "staging": {
+                                "linkedService": {
+                                    "referenceName": "AzureDataLakeStorage1",
+                                    "type": "LinkedServiceReference"
+                                },
+                                "folderPath": "staging"
+                            },
+                            "compute": {
+                                "coreCount": 80,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-24T04:51:31Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/Details')]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]",
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Download_CMSPart17')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Copy_p17",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "HttpReadSettings",
+                                    "requestMethod": "GET"
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "CMSWebsite_part17",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "CMSZipped_Part17",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T23:17:17Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/CMSWebsite_part17')]",
+                "[concat(variables('factoryId'), '/datasets/CMSZipped_Part17')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Download_CMSPart18')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Copy_p18",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [
+                            {
+                                "name": "Destination",
+                                "value": "cms-part-d-prescriber//"
+                            }
+                        ],
+                        "typeProperties": {
+                            "source": {
+                                "type": "BinarySource",
+                                "storeSettings": {
+                                    "type": "HttpReadSettings",
+                                    "requestMethod": "GET"
+                                },
+                                "formatSettings": {
+                                    "type": "BinaryReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "BinarySink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                }
+                            },
+                            "enableStaging": false
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "CMSWebsite_part18",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "CMSZipped_Part18",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-01-21T23:17:17Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/CMSWebsite_part18')]",
+                "[concat(variables('factoryId'), '/datasets/CMSZipped_Part18')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
+            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "Managed",
+                "typeProperties": {
+                    "computeProperties": {
+                        "location": "AutoResolve",
+                        "dataFlowProperties": {
+                            "computeType": "General",
+                            "coreCount": 32,
+                            "timeToLive": 10
+                        }
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartD_Prescriber_PUF_NPI_DRUG_17')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "description": "PartD_Prescriber_PUF_NPI_DRUG_17",
+                "annotations": [],
+                "type": "HttpServer",
+                "typeProperties": {
+                    "url": "[parameters('PartD_Prescriber_PUF_NPI_DRUG_17_properties_typeProperties_url')]",
+                    "enableServerCertificateValidation": true,
+                    "authenticationType": "Anonymous"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartD_Prescriber_PUF_NPI_DRUG_13')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "HttpServer",
+                "typeProperties": {
+                    "url": "[parameters('PartD_Prescriber_PUF_NPI_DRUG_13_properties_typeProperties_url')]",
+                    "enableServerCertificateValidation": true,
+                    "authenticationType": "Anonymous"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartD_Prescriber_PUF_NPI_DRUG_16')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "HttpServer",
+                "typeProperties": {
+                    "url": "[parameters('PartD_Prescriber_PUF_NPI_DRUG_16_properties_typeProperties_url')]",
+                    "enableServerCertificateValidation": true,
+                    "authenticationType": "Anonymous"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/cmsdemopool')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDW",
+                "typeProperties": {
+                    "connectionString": "[parameters('cmsdemopool_connectionString')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartD_Prescriber_PUF_NPI_DRUG_14')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "HttpServer",
+                "typeProperties": {
+                    "url": "[parameters('PartD_Prescriber_PUF_NPI_DRUG_14_properties_typeProperties_url')]",
+                    "enableServerCertificateValidation": true,
+                    "authenticationType": "Anonymous"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+                    "accountKey": {
+                        "type": "SecureString",
+                        "value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartD_Prescriber_PUF_NPI_DRUG_15')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "HttpServer",
+                "typeProperties": {
+                    "url": "[parameters('PartD_Prescriber_PUF_NPI_DRUG_15_properties_typeProperties_url')]",
+                    "enableServerCertificateValidation": true,
+                    "authenticationType": "Anonymous"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PartD_Prescriber_PUF_NPI_DRUG_18')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "HttpServer",
+                "typeProperties": {
+                    "url": "[parameters('PartD_Prescriber_PUF_NPI_DRUG_18_properties_typeProperties_url')]",
+                    "enableServerCertificateValidation": true,
+                    "authenticationType": "Anonymous"
+                },
+                "connectVia": {
+                    "referenceName": "AutoResolveIntegrationRuntime",
+                    "type": "IntegrationRuntimeReference"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSWebsite_part17')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "PartD_Prescriber_PUF_NPI_DRUG_17",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "HttpServerLocation"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/PartD_Prescriber_PUF_NPI_DRUG_17')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSWebsite_part13')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "PartD_Prescriber_PUF_NPI_DRUG_13",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "HttpServerLocation"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/PartD_Prescriber_PUF_NPI_DRUG_13')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsDrugs')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "cmsdemopool",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [
+                    {
+                        "name": "DrugName",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "GenericName",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Year",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearDrugKey",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "Drugs"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/cmsdemopool')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSWebsite_part16')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "PartD_Prescriber_PUF_NPI_DRUG_16",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "HttpServerLocation"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/PartD_Prescriber_PUF_NPI_DRUG_16')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSWebsite_part14')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "PartD_Prescriber_PUF_NPI_DRUG_14",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "HttpServerLocation"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/PartD_Prescriber_PUF_NPI_DRUG_14')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsDetails')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "cmsdemopool",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [
+                    {
+                        "name": "BeneficiaryCount",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TotalClaimCount",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Total30DayFillCount",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 2
+                    },
+                    {
+                        "name": "TotalDaySupply",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "TotalDrugCost",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 2
+                    },
+                    {
+                        "name": "BeneCountGe65",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "BeneCountGe65SuppressFlag",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "TotalClaimCountGe65",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Ge65SuppressFlag",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Total30DayFillCountGe65",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 2
+                    },
+                    {
+                        "name": "TotalDrugCostGe65",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 2
+                    },
+                    {
+                        "name": "TotalDaySupplyGe65",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Year",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearNPI",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearGeoKey",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearSpecialtyKey",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearDrugKey",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "CostPerDay",
+                        "type": "decimal",
+                        "precision": 10,
+                        "scale": 2
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "Details"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/cmsdemopool')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSZipped_Part13')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_DRUG_13.zip",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsSpecialty')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "cmsdemopool",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [
+                    {
+                        "name": "SpecialtyDescriptionFlag",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Year",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearSpecialtyKey",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "Specialty",
+                        "type": "varchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "Specialty"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/cmsdemopool')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/details2015')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_Drug_15.txt",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "columnDelimiter": "\t",
+                    "encodingName": "WINDOWS-1252",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_last_org_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_state",
+                        "type": "String"
+                    },
+                    {
+                        "name": "specialty_description",
+                        "type": "String"
+                    },
+                    {
+                        "name": "description_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "drug_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "generic_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost_ge65",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsGeo')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "cmsdemopool",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [
+                    {
+                        "name": "City",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "State",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Year",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearGeoKey",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "CityState",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "StateKey",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "Geography"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/cmsdemopool')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsProviders')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "cmsdemopool",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "LastName",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "FirstName",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "FullName",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "Year",
+                        "type": "int",
+                        "precision": 10
+                    },
+                    {
+                        "name": "YearNPI",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "Providers"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/cmsdemopool')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsStates')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "cmsdemopool",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlDWTable",
+                "schema": [
+                    {
+                        "name": "State",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "StateKey",
+                        "type": "int",
+                        "precision": 10
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "States"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/cmsdemopool')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSWebsite_part15')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "PartD_Prescriber_PUF_NPI_DRUG_15",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "HttpServerLocation"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/PartD_Prescriber_PUF_NPI_DRUG_15')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ZippedCMSFiles')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "compression": {
+                        "type": "ZipDeflate",
+                        "level": "Fastest"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/UnzippedCMSFiles')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSZipped_Part15')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_DRUG_15.zip",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/details2013')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_Drug_13.txt",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "columnDelimiter": "\t",
+                    "encodingName": "WINDOWS-1252",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_last_org_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_state",
+                        "type": "String"
+                    },
+                    {
+                        "name": "specialty_description",
+                        "type": "String"
+                    },
+                    {
+                        "name": "description_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "drug_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "generic_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost_ge65",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/details2016')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_Drug_16.txt",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "columnDelimiter": "\t",
+                    "encodingName": "WINDOWS-1252",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_last_org_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_state",
+                        "type": "String"
+                    },
+                    {
+                        "name": "specialty_description",
+                        "type": "String"
+                    },
+                    {
+                        "name": "description_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "drug_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "generic_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost_ge65",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/details2014')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_Drug_14.txt",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "columnDelimiter": "\t",
+                    "encodingName": "WINDOWS-1252",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_last_org_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_state",
+                        "type": "String"
+                    },
+                    {
+                        "name": "specialty_description",
+                        "type": "String"
+                    },
+                    {
+                        "name": "description_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "drug_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "generic_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost_ge65",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/details2017')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_Drug_17.txt",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "columnDelimiter": "\t",
+                    "encodingName": "WINDOWS-1252",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_last_org_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_state",
+                        "type": "String"
+                    },
+                    {
+                        "name": "specialty_description",
+                        "type": "String"
+                    },
+                    {
+                        "name": "description_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "drug_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "generic_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost_ge65",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSZipped_Part14')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_DRUG_14.zip",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSZipped_Part16')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_DRUG_16.zip",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSZipped_Part17')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_DRUG_17.zip",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSZipped_Part18')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_DRUG_18.zip",
+                        "fileSystem": "cms-part-d-prescriber"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CMSWebsite_part18')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "PartD_Prescriber_PUF_NPI_DRUG_18",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "HttpServerLocation"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/PartD_Prescriber_PUF_NPI_DRUG_18')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/details2018')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "PartD_Prescriber_PUF_NPI_Drug_18.txt",
+                        "fileSystem": "cms-part-d-prescriber"
+                    },
+                    "columnDelimiter": "\t",
+                    "encodingName": "WINDOWS-1252",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "npi",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_last_org_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_first_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_city",
+                        "type": "String"
+                    },
+                    {
+                        "name": "nppes_provider_state",
+                        "type": "String"
+                    },
+                    {
+                        "name": "specialty_description",
+                        "type": "String"
+                    },
+                    {
+                        "name": "description_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "drug_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "generic_name",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "bene_count_ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_claim_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "ge65_suppress_flag",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_30_day_fill_count_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_day_supply_ge65",
+                        "type": "String"
+                    },
+                    {
+                        "name": "total_drug_cost_ge65",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Specialty')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "details2017",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2017"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2016",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2016"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2015",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2015"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2014",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2014"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2013",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2013"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2018",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2018"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsSpecialty",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Output"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Unique2017"
+                        },
+                        {
+                            "name": "Unique2016"
+                        },
+                        {
+                            "name": "Unique2015"
+                        },
+                        {
+                            "name": "Unique2014"
+                        },
+                        {
+                            "name": "Unique2013"
+                        },
+                        {
+                            "name": "Year2017"
+                        },
+                        {
+                            "name": "Year2016"
+                        },
+                        {
+                            "name": "Year2015"
+                        },
+                        {
+                            "name": "Year2014"
+                        },
+                        {
+                            "name": "Year2013"
+                        },
+                        {
+                            "name": "Union"
+                        },
+                        {
+                            "name": "FinalColumns"
+                        },
+                        {
+                            "name": "SurrogateKey"
+                        },
+                        {
+                            "name": "DerivedColumn1"
+                        },
+                        {
+                            "name": "Unique2018"
+                        },
+                        {
+                            "name": "Year2018"
+                        },
+                        {
+                            "name": "DeDuplicate"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2017\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2016\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2015\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2014\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2013\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2018\ndetails2017 aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tCount = first(npi)) ~> Unique2017\ndetails2016 aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tCount = first(npi)) ~> Unique2016\ndetails2015 aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tCount = first(npi)) ~> Unique2015\ndetails2014 aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tCount = first(npi)) ~> Unique2014\ndetails2013 aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tCount = first(npi)) ~> Unique2013\nUnique2017 derive(Year = 2017) ~> Year2017\nUnique2016 derive(Year = 2016) ~> Year2016\nUnique2015 derive(Year = 2015) ~> Year2015\nUnique2014 derive(Year = 2014) ~> Year2014\nUnique2013 derive(Year = 2013) ~> Year2013\nYear2017, Year2016, Year2015, Year2014, Year2013, Year2018 union(byName: true)~> Union\nDeDuplicate select(mapColumn(\n\t\tspecialty_description,\n\t\tdescription_flag,\n\t\tYear\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> FinalColumns\nDerivedColumn1 keyGenerate(output(YearSpecialtyKey as long),\n\tstartAt: 1L) ~> SurrogateKey\nFinalColumns derive(YearSpecialty = toString(Year) + specialty_description + \"|\" + description_flag) ~> DerivedColumn1\ndetails2018 aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tCount = first(npi)) ~> Unique2018\nUnique2018 derive(Year = 2018) ~> Year2018\nUnion aggregate(groupBy(specialty_description,\n\t\tdescription_flag),\n\tYear = max(Year)) ~> DeDuplicate\nSurrogateKey sink(input(\n\t\tSpecialtyDescriptionFlag as string,\n\t\tYear as integer,\n\t\tYearSpecialtyKey as integer,\n\t\tSpecialty as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tSpecialty = specialty_description,\n\t\tSpecialtyDescriptionFlag = description_flag,\n\t\tYear,\n\t\tYearSpecialtyKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> Output"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/details2017')]",
+                "[concat(variables('factoryId'), '/datasets/details2016')]",
+                "[concat(variables('factoryId'), '/datasets/details2015')]",
+                "[concat(variables('factoryId'), '/datasets/details2014')]",
+                "[concat(variables('factoryId'), '/datasets/details2013')]",
+                "[concat(variables('factoryId'), '/datasets/details2018')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsSpecialty')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Providers')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "details2017",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2017"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2016",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2016"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2015",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2015"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2014",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2014"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2013",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2013"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2018",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2018"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsProviders",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Output"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Unique2017"
+                        },
+                        {
+                            "name": "Unique2016"
+                        },
+                        {
+                            "name": "Unique2015"
+                        },
+                        {
+                            "name": "Unique2014"
+                        },
+                        {
+                            "name": "Unique2013"
+                        },
+                        {
+                            "name": "Year2017"
+                        },
+                        {
+                            "name": "Year2016"
+                        },
+                        {
+                            "name": "Year2015"
+                        },
+                        {
+                            "name": "Year2014"
+                        },
+                        {
+                            "name": "Year2013"
+                        },
+                        {
+                            "name": "Union"
+                        },
+                        {
+                            "name": "FinalColumns"
+                        },
+                        {
+                            "name": "FinalDataTypes"
+                        },
+                        {
+                            "name": "SurrogateKey"
+                        },
+                        {
+                            "name": "DerivedColumn1"
+                        },
+                        {
+                            "name": "Unique2018"
+                        },
+                        {
+                            "name": "Year2018"
+                        },
+                        {
+                            "name": "DeDuplicate"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2017\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2016\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2015\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2014\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2013\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2018\ndetails2017 aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tCount = first(npi)) ~> Unique2017\ndetails2016 aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tCount = first(npi)) ~> Unique2016\ndetails2015 aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tCount = first(npi)) ~> Unique2015\ndetails2014 aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tCount = first(npi)) ~> Unique2014\ndetails2013 aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tCount = first(npi)) ~> Unique2013\nUnique2017 derive(Year = 2017) ~> Year2017\nUnique2016 derive(Year = 2016) ~> Year2016\nUnique2015 derive(Year = 2015) ~> Year2015\nUnique2014 derive(Year = 2014) ~> Year2014\nUnique2013 derive(Year = 2013) ~> Year2013\nYear2017, Year2016, Year2015, Year2014, Year2013, Year2018 union(byName: true)~> Union\nDeDuplicate select(mapColumn(\n\t\tnpi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name,\n\t\tYear\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> FinalColumns\nSurrogateKey derive(npi = toInteger(npi)) ~> FinalDataTypes\nDerivedColumn1 keyGenerate(output(YearNPI as long),\n\tstartAt: 1L) ~> SurrogateKey\nFinalColumns derive(YearNPI = concat(toString(Year),npi),\n\t\tFullName = nppes_provider_last_org_name + ', ' + nppes_provider_first_name) ~> DerivedColumn1\ndetails2018 aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tCount = first(npi)) ~> Unique2018\nUnique2018 derive(Year = 2018) ~> Year2018\nUnion aggregate(groupBy(npi,\n\t\tnppes_provider_last_org_name,\n\t\tnppes_provider_first_name),\n\tYear = max(Year)) ~> DeDuplicate\nFinalDataTypes sink(input(\n\t\tnpi as integer,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tFullName as string,\n\t\tYear as integer,\n\t\tYearNPI as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tnpi,\n\t\tLastName = nppes_provider_last_org_name,\n\t\tFirstName = nppes_provider_first_name,\n\t\tYear,\n\t\tYearNPI,\n\t\tFullName\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> Output"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/details2017')]",
+                "[concat(variables('factoryId'), '/datasets/details2016')]",
+                "[concat(variables('factoryId'), '/datasets/details2015')]",
+                "[concat(variables('factoryId'), '/datasets/details2014')]",
+                "[concat(variables('factoryId'), '/datasets/details2013')]",
+                "[concat(variables('factoryId'), '/datasets/details2018')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsProviders')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Geography')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "details2017",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2017"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2016",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2016"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2015",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2015"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2014",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2014"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2013",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2013"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsStates",
+                                "type": "DatasetReference"
+                            },
+                            "name": "States"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2018",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2018"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsGeo",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Output"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Unique2017"
+                        },
+                        {
+                            "name": "Unique2016"
+                        },
+                        {
+                            "name": "Unique2015"
+                        },
+                        {
+                            "name": "Unique2014"
+                        },
+                        {
+                            "name": "Unique2013"
+                        },
+                        {
+                            "name": "Year2017"
+                        },
+                        {
+                            "name": "Year2016"
+                        },
+                        {
+                            "name": "Year2015"
+                        },
+                        {
+                            "name": "Year2014"
+                        },
+                        {
+                            "name": "Year2013"
+                        },
+                        {
+                            "name": "Union"
+                        },
+                        {
+                            "name": "FinalColumns"
+                        },
+                        {
+                            "name": "FinalDataTypes"
+                        },
+                        {
+                            "name": "SurrogateKey"
+                        },
+                        {
+                            "name": "DerivedColumn1"
+                        },
+                        {
+                            "name": "AddStateKey"
+                        },
+                        {
+                            "name": "Unique2018"
+                        },
+                        {
+                            "name": "Year2018"
+                        },
+                        {
+                            "name": "ReplaceNulls"
+                        },
+                        {
+                            "name": "DeDuplicate"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2017\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2016\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2015\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2014\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2013\nsource(output(\n\t\tState as string,\n\t\tStateKey as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: false) ~> States\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2018\ndetails2017 aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tCount = first(npi)) ~> Unique2017\ndetails2016 aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tCount = first(npi)) ~> Unique2016\ndetails2015 aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tCount = first(npi)) ~> Unique2015\ndetails2014 aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tCount = first(npi)) ~> Unique2014\ndetails2013 aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tCount = first(npi)) ~> Unique2013\nUnique2017 derive(Year = 2017) ~> Year2017\nUnique2016 derive(Year = 2016) ~> Year2016\nUnique2015 derive(Year = 2015) ~> Year2015\nUnique2014 derive(Year = 2014) ~> Year2014\nUnique2013 derive(Year = 2013) ~> Year2013\nYear2017, Year2016, Year2015, Year2014, Year2013, Year2018 union(byName: true)~> Union\nReplaceNulls select(mapColumn(\n\t\tnppes_provider_city,\n\t\tnppes_provider_state,\n\t\tYear,\n\t\tStateKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> FinalColumns\nSurrogateKey derive(YearGeoKey = toInteger(YearGeoKey)) ~> FinalDataTypes\nDerivedColumn1 keyGenerate(output(YearGeoKey as long),\n\tstartAt: 1L) ~> SurrogateKey\nFinalColumns derive(YearGeo = concat(toString(Year),nppes_provider_city,nppes_provider_state),\n\t\tCityState = nppes_provider_city + ', ' + nppes_provider_state) ~> DerivedColumn1\nDeDuplicate, States join(nppes_provider_state == State,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> AddStateKey\ndetails2018 aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tCount = first(npi)) ~> Unique2018\nUnique2018 derive(Year = 2018) ~> Year2018\nAddStateKey derive(nppes_provider_city = case(isNull(nppes_provider_city),\" \",nppes_provider_city)) ~> ReplaceNulls\nUnion aggregate(groupBy(nppes_provider_city,\n\t\tnppes_provider_state),\n\tYear = max(Year)) ~> DeDuplicate\nFinalDataTypes sink(input(\n\t\tCity as string,\n\t\tState as string,\n\t\tYear as integer,\n\t\tYearGeoKey as integer,\n\t\tCityState as string,\n\t\tStateKey as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tCity = nppes_provider_city,\n\t\tState = nppes_provider_state,\n\t\tYear,\n\t\tYearGeoKey,\n\t\tCityState,\n\t\tStateKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> Output"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/details2017')]",
+                "[concat(variables('factoryId'), '/datasets/details2016')]",
+                "[concat(variables('factoryId'), '/datasets/details2015')]",
+                "[concat(variables('factoryId'), '/datasets/details2014')]",
+                "[concat(variables('factoryId'), '/datasets/details2013')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsStates')]",
+                "[concat(variables('factoryId'), '/datasets/details2018')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsGeo')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/State')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "details2017",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2017"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2016",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2016"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2015",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2015"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2014",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2014"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2013",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2013"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2018",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2018"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsStates",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Final"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Unique2017"
+                        },
+                        {
+                            "name": "Unique2016"
+                        },
+                        {
+                            "name": "Unique2015"
+                        },
+                        {
+                            "name": "Unique2014"
+                        },
+                        {
+                            "name": "Unique2013"
+                        },
+                        {
+                            "name": "Union1716"
+                        },
+                        {
+                            "name": "Union171615"
+                        },
+                        {
+                            "name": "Union17161514"
+                        },
+                        {
+                            "name": "Union1716151413"
+                        },
+                        {
+                            "name": "UniqueStates"
+                        },
+                        {
+                            "name": "SelectStates"
+                        },
+                        {
+                            "name": "StatesKey"
+                        },
+                        {
+                            "name": "Unique2018"
+                        },
+                        {
+                            "name": "Union171615141318"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2017\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2016\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2015\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2014\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2013\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2018\ndetails2017 aggregate(groupBy(nppes_provider_state),\n\tCount = countDistinct(npi)) ~> Unique2017\ndetails2016 aggregate(groupBy(nppes_provider_state),\n\tCount = countDistinct(npi)) ~> Unique2016\ndetails2015 aggregate(groupBy(nppes_provider_state),\n\tCount = countDistinct(npi)) ~> Unique2015\ndetails2014 aggregate(groupBy(nppes_provider_state),\n\tCount = countDistinct(npi)) ~> Unique2014\ndetails2013 aggregate(groupBy(nppes_provider_state),\n\tCount = countDistinct(npi)) ~> Unique2013\nUnique2017, Unique2016 union(byName: true)~> Union1716\nUnion1716, Unique2015 union(byName: true)~> Union171615\nUnion171615, Unique2014 union(byName: true)~> Union17161514\nUnion17161514, Unique2013 union(byName: true)~> Union1716151413\nUnion171615141318 aggregate(groupBy(nppes_provider_state),\n\tCount = sum(Count)) ~> UniqueStates\nUniqueStates select(mapColumn(\n\t\tnppes_provider_state\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectStates\nSelectStates keyGenerate(output(StatesKey as long),\n\tstartAt: 1L) ~> StatesKey\ndetails2018 aggregate(groupBy(nppes_provider_state),\n\tCount = countDistinct(npi)) ~> Unique2018\nUnion1716151413, Unique2018 union(byName: true)~> Union171615141318\nStatesKey sink(input(\n\t\tState as string,\n\t\tStateKey as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tState = nppes_provider_state,\n\t\tStateKey = StatesKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> Final"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/details2017')]",
+                "[concat(variables('factoryId'), '/datasets/details2016')]",
+                "[concat(variables('factoryId'), '/datasets/details2015')]",
+                "[concat(variables('factoryId'), '/datasets/details2014')]",
+                "[concat(variables('factoryId'), '/datasets/details2013')]",
+                "[concat(variables('factoryId'), '/datasets/details2018')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsStates')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Drugs')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "details2017",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2017"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2016",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2016"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2015",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2015"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2014",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2014"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2013",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2013"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2018",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2018"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsDrugs",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Output"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Unique2017"
+                        },
+                        {
+                            "name": "Unique2016"
+                        },
+                        {
+                            "name": "Unique2015"
+                        },
+                        {
+                            "name": "Unique2014"
+                        },
+                        {
+                            "name": "Unique2013"
+                        },
+                        {
+                            "name": "Year2017"
+                        },
+                        {
+                            "name": "Year2016"
+                        },
+                        {
+                            "name": "Year2015"
+                        },
+                        {
+                            "name": "Year2014"
+                        },
+                        {
+                            "name": "Year2013"
+                        },
+                        {
+                            "name": "Union"
+                        },
+                        {
+                            "name": "FinalColumns"
+                        },
+                        {
+                            "name": "FinalDataTypes"
+                        },
+                        {
+                            "name": "SurrogateKey"
+                        },
+                        {
+                            "name": "Unique2018"
+                        },
+                        {
+                            "name": "Year2018"
+                        },
+                        {
+                            "name": "DeDuplicate"
+                        },
+                        {
+                            "name": "YearDrug"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2017\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2016\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2015\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2014\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2013\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2018\ndetails2017 aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tCount = first(npi)) ~> Unique2017\ndetails2016 aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tCount = first(npi)) ~> Unique2016\ndetails2015 aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tCount = first(npi)) ~> Unique2015\ndetails2014 aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tCount = first(npi)) ~> Unique2014\ndetails2013 aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tCount = first(npi)) ~> Unique2013\nUnique2017 derive(Year = 2017) ~> Year2017\nUnique2016 derive(Year = 2016) ~> Year2016\nUnique2015 derive(Year = 2015) ~> Year2015\nUnique2014 derive(Year = 2014) ~> Year2014\nUnique2013 derive(Year = 2013) ~> Year2013\nYear2017, Year2016, Year2015, Year2014, Year2013, Year2018 union(byName: true)~> Union\nUnion select(mapColumn(\n\t\tdrug_name,\n\t\tgeneric_name,\n\t\tYear\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> FinalColumns\nSurrogateKey derive(YearDrug = toInteger(YearDrug)) ~> FinalDataTypes\nYearDrug keyGenerate(output(YearDrug as long),\n\tstartAt: 1L) ~> SurrogateKey\ndetails2018 aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tCount = first(npi)) ~> Unique2018\nUnique2018 derive(Year = 2018) ~> Year2018\nFinalColumns aggregate(groupBy(drug_name,\n\t\tgeneric_name),\n\tYear = max(Year)) ~> DeDuplicate\nDeDuplicate derive(YearDrug = toString(Year) + drug_name + \"|\" + generic_name) ~> YearDrug\nFinalDataTypes sink(input(\n\t\tDrugName as string,\n\t\tGenericName as string,\n\t\tYear as integer,\n\t\tYearDrugKey as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tDrugName = drug_name,\n\t\tGenericName = generic_name,\n\t\tYear,\n\t\tYearDrugKey = YearDrug\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> Output"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/details2017')]",
+                "[concat(variables('factoryId'), '/datasets/details2016')]",
+                "[concat(variables('factoryId'), '/datasets/details2015')]",
+                "[concat(variables('factoryId'), '/datasets/details2014')]",
+                "[concat(variables('factoryId'), '/datasets/details2013')]",
+                "[concat(variables('factoryId'), '/datasets/details2018')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsDrugs')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Details')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "details2017",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2017"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2016",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2016"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2015",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2015"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2014",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2014"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2013",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2013"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsGeo",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Geo"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsProviders",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Providers"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsSpecialty",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Specialty"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsDrugs",
+                                "type": "DatasetReference"
+                            },
+                            "name": "Drugs"
+                        },
+                        {
+                            "dataset": {
+                                "referenceName": "details2018",
+                                "type": "DatasetReference"
+                            },
+                            "name": "details2018"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "AzureSynapseAnalyticsDetails",
+                                "type": "DatasetReference"
+                            },
+                            "name": "FinalDetails"
+                        }
+                    ],
+                    "transformations": [
+                        {
+                            "name": "Year2017"
+                        },
+                        {
+                            "name": "Year2016"
+                        },
+                        {
+                            "name": "Year2015"
+                        },
+                        {
+                            "name": "Year2014"
+                        },
+                        {
+                            "name": "Year2013"
+                        },
+                        {
+                            "name": "Union"
+                        },
+                        {
+                            "name": "JoinProviders"
+                        },
+                        {
+                            "name": "YearInt"
+                        },
+                        {
+                            "name": "SelectProviders"
+                        },
+                        {
+                            "name": "JoinGeo"
+                        },
+                        {
+                            "name": "SelectGeo"
+                        },
+                        {
+                            "name": "JoinSpecialty"
+                        },
+                        {
+                            "name": "SelectSpecialty"
+                        },
+                        {
+                            "name": "JoinDrugs"
+                        },
+                        {
+                            "name": "SelectDrugs"
+                        },
+                        {
+                            "name": "DataTypes"
+                        },
+                        {
+                            "name": "AddCostPerDay"
+                        },
+                        {
+                            "name": "Year2018"
+                        },
+                        {
+                            "name": "ReplaceNulls"
+                        }
+                    ],
+                    "script": "source(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2017\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2016\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2015\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2014\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2013\nsource(output(\n\t\tCity as string,\n\t\tState as string,\n\t\tYear as integer,\n\t\tYearGeoKey as integer,\n\t\tCityState as string,\n\t\tStateKey as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> Geo\nsource(output(\n\t\tnpi as integer,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tFullName as string,\n\t\tYear as integer,\n\t\tYearNPI as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> Providers\nsource(output(\n\t\tSpecialtyDescriptionFlag as string,\n\t\tYear as integer,\n\t\tYearSpecialtyKey as integer,\n\t\tSpecialty as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> Specialty\nsource(output(\n\t\tDrugName as string,\n\t\tGenericName as string,\n\t\tYear as integer,\n\t\tYearDrugKey as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> Drugs\nsource(output(\n\t\tnpi as string,\n\t\tnppes_provider_last_org_name as string,\n\t\tnppes_provider_first_name as string,\n\t\tnppes_provider_city as string,\n\t\tnppes_provider_state as string,\n\t\tspecialty_description as string,\n\t\tdescription_flag as string,\n\t\tdrug_name as string,\n\t\tgeneric_name as string,\n\t\tbene_count as string,\n\t\ttotal_claim_count as string,\n\t\ttotal_30_day_fill_count as string,\n\t\ttotal_day_supply as string,\n\t\ttotal_drug_cost as string,\n\t\tbene_count_ge65 as string,\n\t\tbene_count_ge65_suppress_flag as string,\n\t\ttotal_claim_count_ge65 as string,\n\t\tge65_suppress_flag as string,\n\t\ttotal_30_day_fill_count_ge65 as string,\n\t\ttotal_day_supply_ge65 as string,\n\t\ttotal_drug_cost_ge65 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> details2018\ndetails2017 derive(Year = \"2017\") ~> Year2017\ndetails2016 derive(Year = \"2016\") ~> Year2016\ndetails2015 derive(Year = \"2015\") ~> Year2015\ndetails2014 derive(Year = \"2014\") ~> Year2014\ndetails2013 derive(Year = \"2013\") ~> Year2013\nYear2017, Year2016, Year2015, Year2014, Year2013, Year2018 union(byName: true)~> Union\nYearInt, Providers join(YearInt@npi == Providers@npi\n\t&& nppes_provider_last_org_name == LastName\n\t&& nppes_provider_first_name == FirstName,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> JoinProviders\nUnion derive(Year = toInteger(Year),\n\t\tnpi = toInteger(npi)) ~> YearInt\nJoinProviders select(mapColumn(\n\t\tnppes_provider_city,\n\t\tnppes_provider_state,\n\t\tspecialty_description,\n\t\tdescription_flag,\n\t\tdrug_name,\n\t\tgeneric_name,\n\t\tbene_count,\n\t\ttotal_claim_count,\n\t\ttotal_30_day_fill_count,\n\t\ttotal_day_supply,\n\t\ttotal_drug_cost,\n\t\tbene_count_ge65,\n\t\tbene_count_ge65_suppress_flag,\n\t\ttotal_claim_count_ge65,\n\t\tge65_suppress_flag,\n\t\ttotal_30_day_fill_count_ge65,\n\t\ttotal_day_supply_ge65,\n\t\ttotal_drug_cost_ge65,\n\t\tYear = YearInt@Year,\n\t\tYearNPI\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectProviders\nReplaceNulls, Geo join(nppes_provider_city == City\n\t&& nppes_provider_state == State,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> JoinGeo\nJoinGeo select(mapColumn(\n\t\tspecialty_description,\n\t\tdescription_flag,\n\t\tdrug_name,\n\t\tgeneric_name,\n\t\tbene_count,\n\t\ttotal_claim_count,\n\t\ttotal_30_day_fill_count,\n\t\ttotal_day_supply,\n\t\ttotal_drug_cost,\n\t\tbene_count_ge65,\n\t\tbene_count_ge65_suppress_flag,\n\t\ttotal_claim_count_ge65,\n\t\tge65_suppress_flag,\n\t\ttotal_30_day_fill_count_ge65,\n\t\ttotal_day_supply_ge65,\n\t\ttotal_drug_cost_ge65,\n\t\tYear = SelectProviders@Year,\n\t\tYearNPI,\n\t\tYearGeoKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectGeo\nSelectGeo, Specialty join(specialty_description == Specialty\n\t&& description_flag == SpecialtyDescriptionFlag,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> JoinSpecialty\nJoinSpecialty select(mapColumn(\n\t\tdrug_name,\n\t\tgeneric_name,\n\t\tbene_count,\n\t\ttotal_claim_count,\n\t\ttotal_30_day_fill_count,\n\t\ttotal_day_supply,\n\t\ttotal_drug_cost,\n\t\tbene_count_ge65,\n\t\tbene_count_ge65_suppress_flag,\n\t\ttotal_claim_count_ge65,\n\t\tge65_suppress_flag,\n\t\ttotal_30_day_fill_count_ge65,\n\t\ttotal_day_supply_ge65,\n\t\ttotal_drug_cost_ge65,\n\t\tYear = SelectGeo@Year,\n\t\tYearNPI,\n\t\tYearGeoKey,\n\t\tYearSpecialtyKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectSpecialty\nSelectSpecialty, Drugs join(drug_name == DrugName\n\t&& generic_name == GenericName,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> JoinDrugs\nJoinDrugs select(mapColumn(\n\t\tbene_count,\n\t\ttotal_claim_count,\n\t\ttotal_30_day_fill_count,\n\t\ttotal_day_supply,\n\t\ttotal_drug_cost,\n\t\tbene_count_ge65,\n\t\tbene_count_ge65_suppress_flag,\n\t\ttotal_claim_count_ge65,\n\t\tge65_suppress_flag,\n\t\ttotal_30_day_fill_count_ge65,\n\t\ttotal_day_supply_ge65,\n\t\ttotal_drug_cost_ge65,\n\t\tYear = SelectSpecialty@Year,\n\t\tYearNPI,\n\t\tYearGeoKey,\n\t\tYearSpecialtyKey,\n\t\tYearDrugKey\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectDrugs\nSelectDrugs derive(bene_count = toInteger(bene_count),\n\t\ttotal_claim_count = toInteger(total_claim_count),\n\t\ttotal_30_day_fill_count = toDecimal(total_30_day_fill_count),\n\t\ttotal_day_supply = toInteger(total_day_supply),\n\t\ttotal_drug_cost = toDecimal(total_drug_cost),\n\t\tbene_count_ge65 = toInteger(bene_count_ge65),\n\t\ttotal_claim_count_ge65 = toInteger(total_claim_count_ge65),\n\t\ttotal_30_day_fill_count_ge65 = toDecimal(total_30_day_fill_count_ge65),\n\t\ttotal_drug_cost_ge65 = toDecimal(total_drug_cost_ge65),\n\t\ttotal_day_supply_ge65 = toInteger(total_day_supply_ge65)) ~> DataTypes\nDataTypes derive(CostPerDayRowLevel = divide(total_drug_cost,total_day_supply)) ~> AddCostPerDay\ndetails2018 derive(Year = \"2018\") ~> Year2018\nSelectProviders derive(nppes_provider_city = case(isNull(nppes_provider_city),\" \",nppes_provider_city)) ~> ReplaceNulls\nAddCostPerDay sink(input(\n\t\tBeneficiaryCount as integer,\n\t\tTotalClaimCount as integer,\n\t\tTotal30DayFillCount as decimal(10,2),\n\t\tTotalDaySupply as integer,\n\t\tTotalDrugCost as decimal(10,2),\n\t\tBeneCountGe65 as integer,\n\t\tBeneCountGe65SuppressFlag as string,\n\t\tTotalClaimCountGe65 as integer,\n\t\tGe65SuppressFlag as string,\n\t\tTotal30DayFillCountGe65 as decimal(10,2),\n\t\tTotalDrugCostGe65 as decimal(10,2),\n\t\tTotalDaySupplyGe65 as integer,\n\t\tYear as integer,\n\t\tYearNPI as integer,\n\t\tYearGeoKey as integer,\n\t\tYearSpecialtyKey as integer,\n\t\tYearDrugKey as integer,\n\t\tCostPerDay as decimal(10,2)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tBeneficiaryCount = bene_count,\n\t\tTotalClaimCount = total_claim_count,\n\t\tTotal30DayFillCount = total_30_day_fill_count,\n\t\tTotalDaySupply = total_day_supply,\n\t\tTotalDrugCost = total_drug_cost,\n\t\tBeneCountGe65 = bene_count_ge65,\n\t\tBeneCountGe65SuppressFlag = bene_count_ge65_suppress_flag,\n\t\tTotalClaimCountGe65 = total_claim_count_ge65,\n\t\tGe65SuppressFlag = ge65_suppress_flag,\n\t\tTotal30DayFillCountGe65 = total_30_day_fill_count_ge65,\n\t\tTotalDrugCostGe65 = total_drug_cost_ge65,\n\t\tTotalDaySupplyGe65 = total_day_supply_ge65,\n\t\tYear,\n\t\tYearNPI,\n\t\tYearGeoKey,\n\t\tYearSpecialtyKey,\n\t\tYearDrugKey,\n\t\tCostPerDay = CostPerDayRowLevel\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tallowCopyCommand: true) ~> FinalDetails"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/details2017')]",
+                "[concat(variables('factoryId'), '/datasets/details2016')]",
+                "[concat(variables('factoryId'), '/datasets/details2015')]",
+                "[concat(variables('factoryId'), '/datasets/details2014')]",
+                "[concat(variables('factoryId'), '/datasets/details2013')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsGeo')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsProviders')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsSpecialty')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsDrugs')]",
+                "[concat(variables('factoryId'), '/datasets/details2018')]",
+                "[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsDetails')]"
+            ]
+        }
+    ]
+}
