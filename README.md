@@ -30,15 +30,13 @@ Azure Account with permissions to create Azure Resources (Storage, Azure Data Fa
     `cd E2ESynapseDemo`
 
     ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
-3. Start script and provide Resource Group Name and User credentials (See example below. **Note:** Don't use the same names in example!)
+3. Start script and provide Resource Group Name and User credentials (See example below. **Note:** Don't use the same names as in example below!)
 
-    `PS /home/kunal/E2ESynapseDemo> ./deploySynapseStorageADF.ps1`
+    `PS /home/kunal/E2ESynapseDemo> ./setup.ps1`
 
     `Do you want to use existing resource(s) for this CMS Demo or create everything new from scratch?  Enter 1 for New or 2 for Existing: 1`
 
     `Enter New Resource Group Name: SynapseDemo1`
-
-    `Enter SQL Server Administrator Name: synapsedemo1server`
 
     `Enter SQL Server Password: Passw0rd!`
 

@@ -383,6 +383,11 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
         Write-Host "All Tables loaded to Synapse Instance: $database"
     }
 
+Function Cleanup
+{
+    Remove-Item Parameters*.json
+}
+
     # Call Functions
     Get-StorageKey
     Get-ConnectionString
@@ -391,4 +396,5 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
     Get-CMSData
     Set-SynapseDDLs
     Set-LoadSynapseTables
+    Cleanup
 #    Set-ScaleDownSynapse
