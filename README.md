@@ -1,5 +1,5 @@
 ## Healthcare CMS Demo using Azure Synapse Analytics, Azure Data Factory and Power BI 
-UPDATE: As of 3/24/2021, Azure Synapse (SQL DW) has been upgraded to Synapse Analytics (current GA version) which has Synapse Workspace, Serverless Pool, On-demand SQL Pool and  more!
+UPDATE: As of 3/5/2021, Azure Synapse (SQL DW) has been upgraded to Synapse Analytics (current GA version) which has Synapse Workspace, Serverless Pool, On-demand SQL Pool and  more!
 
 UPDATE: As of 2/17/2021, a new and updated version of this solution is now available. It includes new 2018 data (now 148M total rows), optimized ADF data flows, a more efficient dimensional design, and a new Power BI report titled 'Medicare Part D Report V2.' More info about these changes is coming soon.
 
