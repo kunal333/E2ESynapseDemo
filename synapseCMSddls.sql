@@ -1,7 +1,6 @@
 ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = 'Password0~';
 GO
 
-
 --DROP TABLE[dbo].[States];
 CREATE TABLE [dbo].[States](
 	[State] [varchar](2) NULL,

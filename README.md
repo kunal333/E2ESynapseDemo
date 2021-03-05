@@ -1,4 +1,5 @@
-## Healthcare CMS Demo using Azure Synapse, Azure Data Factory and Power BI
+## Healthcare CMS Demo using Azure Synapse Analytics, Azure Data Factory and Power BI 
+UPDATE: As of 3/5/2021, Azure Synapse (SQL DW) has been upgraded to Synapse Analytics (current GA version) which has Synapse Workspace, Serverless Pool, On-demand SQL Pool and  more!
 
 UPDATE: As of 2/17/2021, a new and updated version of this solution is now available. It includes new 2018 data (now 148M total rows), optimized ADF data flows, a more efficient dimensional design, and a new Power BI report titled 'Medicare Part D Report V2.' More info about these changes is coming soon.
 
@@ -18,29 +19,27 @@ The purpose of this project is to 1) automate the deployment of Azure Resources 
 Azure Account with permissions to create Azure Resources (Storage, Azure Data Factory, Synapse). A tutorial of deploying the Azure ARM Template is here: https://youtu.be/-YnF2EHzTzs
 
 ### 4 Easy Steps to Deployment:
-1. Login to Azure Portal and open Cloud Shell from the top navigation bar (see below image). Make sure to select PowerShell prompt.  Alternatively, if you want to use PowerShell from your local machine, <a href="https://github.com/kunal333/E2ESynapseDemo/UsingPowerShellFromLocal.md" title="UsingPowerShellFromLocal">click here</a>.
 
-    ![Command Shell](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CommandShell.png)
-2. Clone this Git Repository and switch to new directory (using commands below)
+1. Login to Azure Portal and open Cloud Shell from the top navigation bar. Make sure to select PowerShell prompt.  Alternatively, you can use PowerShell from your local machine, <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/UsingPowerShellFromLocal.md" title="UsingPowerShellFromLocal">click here</a>.
+
+2. Clone this Git Repository and switch to the new directory (using commands below)
 
     `git clone https://github.com/kunal333/E2ESynapseDemo.git`
     
     `cd E2ESynapseDemo`
 
-    ![Clone Git Repository](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/CloneGitRepo.png)
-3. Start script and provide Resource Group Name and User credentials (See example below. **Note:** Don't use the same names in example!)
+3. Start script and provide Resource Group Name and User credentials (See example below. **Note:** Don't use the same names as in example below!)
 
-    `PS /home/kunal/E2ESynapseDemo> ./deploySynapseStorageADF.ps1`
+    `PS /home/kunal/E2ESynapseDemo> ./setup.ps1`
 
-    `Do you want to use existing resource(s) for this CMS Demo or create everything new from scratch?  Enter 1 for New or 2 for Existing: 1`
+    `Do you want to use any existing resource(s) or create all resources from scratch?  Enter 1 for NEW or 2 for EXISTING: 1`
 
-    `Enter New Resource Group Name: SynapseDemo1`
+    `Enter New Resource Group Name: CMSDemo100`
 
-    `Enter SQL Server Administrator Name: synapsedemo1server`
+    `Default Synapse Admin Username is: sqladminuser`
 
-    `Enter SQL Server Password: Passw0rd!`
+    `Enter Synapse Admin Password: Password0~`
 
-    ![Enter Details](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/EnterDetails.png)
 4. Next step is to get the Power BI tempate and connect to the Synapse instance. A tutorial of deploying the parameterized Power BI Template file is here: https://youtu.be/_mslQZM7NrU
 
 **Note**:If you are using Azure Portal Cloud Shell, you might see errors due to inactivity. Please ignore them as the script would continue to run in the background. Total time for end to end deployment is around 1 hour. 

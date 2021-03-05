@@ -4,8 +4,7 @@
     "parameters": {
         "factoryName": {
             "type": "string",
-            "metadata": "Data Factory name",
-            "defaultValue": "finalcmsdemoadf"
+            "metadata": "Data Factory name"
         },
         "cmsdemopool_connectionString": {
             "type": "secureString",

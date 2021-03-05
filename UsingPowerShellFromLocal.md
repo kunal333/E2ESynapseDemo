@@ -12,9 +12,13 @@ Below are the steps to execute PowerShell script from your Local machine:
 
 `Install-Module -Name SqlServer -Force -Confirm`
 
-4. Connect to Azure Account using commands below:
+4. Install Az.Synapse PowerShell module for Synapse Analytics
+
+`Install-Module -Name Az.Synapse`
+
+5. Connect to Azure Account using commands below:
 
 `Connect-AzAccount`
 
-5. Follow rest of the steps 2 through 4 from section '4 Easy Steps to Deployment' at <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/README.md#4-easy-steps-to-deployment" title="README">READ ME</a>.
+6. Follow rest of the steps 2 through 4 from section '4 Easy Steps to Deployment' at <a href="https://github.com/kunal333/E2ESynapseDemo/blob/master/README.md#4-easy-steps-to-deployment" title="README">READ ME</a>.
 
