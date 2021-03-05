@@ -320,7 +320,7 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
 
         Write-Host  "Deploying ADF ARM Template with the new Parameters File"
     
-        $templateFile = "$path/deployARMTemplate.json"
+        $templateFile = "$path/DeployADFARMTemplate.json"
         $parameterFile="$path/ParametersARMTemplate.json"
         New-AzResourceGroupDeployment `
         -Name $DataFactoryName `
