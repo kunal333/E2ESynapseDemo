@@ -1,7 +1,7 @@
 $currentTime = Get-Date
 Write-Host "Script started at" + $currentTime
 
-Connect-AzAccount
+#Connect-AzAccount
 
 $path = Get-Location
 $getDate = Get-Date -Format "MMddyyyy"
@@ -10,17 +10,121 @@ $location = "westus2"
 $UPN = (Get-AzContext).Account.Id
 $principalId = (Get-AzAdUser -UserPrincipalName $UPN).Id
 
+# Get User Input
 $resourceCheck = Read-Host "Do you want to use any existing resource(s) or create all resources from scratch?  Enter 1 for NEW or 2 for EXISTING"
-if ($resourceCheck -eq 1)
-{
+if ($resourceCheck -eq 1) {
     # Set Variables
     $resourceGroupName = Read-Host "Enter New Resource Group Name"
-    $sqlAdministratorLoginPassword = Read-Host "Enter SQL Server Password" #-assecurestring
+
+    #Set default variables
     $workspaceName = $resourceGroupName.ToLower()+ $getDate+"ws"
     $defaultDataLakeStorageAccountName = $resourceGroupName.ToLower() + ((97..122) | Get-Random -Count 1 | % {[char]$_}) # "storage"+$getDate + ((65..90) + (97..122) | Get-Random -Count 1 | % {[char]$_})
-    $defaultDataLakeStorageFilesystemName = $resourceGroupName.ToLower()+"ws"
     $DataFactoryName = $resourceGroupName.ToLower()+ $getDate+"adf"
+    $sqlpoolName = "sqlpool1"
+} 
+elseif ($resourceCheck -eq 2) {
+    $resourceGroupName = Read-Host "Enter Resource Group Name"
+    $defaultDataLakeStorageAccountName = Read-Host "Enter Azure Blob Storage Name"
+    $DataFactoryName = Read-Host "Enter Data Factory Name"
+    $workspaceName = Read-Host "Enter Synapse Workspace Name"
+    $sqlpoolName = Read-Host "Enter Synapse Dedicated Pool Name"
 
+    while ($true) {
+        $rgInstance = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
+        if ($rgInstance){
+            break
+        }
+        else {
+            Write-Host $resourceGroupName "Resource Group Name does't exists."
+    
+            $check = Read-Host "Do you want to create a new one with this name? Enter 1 for YES 2 for NO"
+            if ($check -eq 1){
+                break
+            }
+            $resourceGroupName = Read-Host "Enter Existing Resource Group Name"
+        }
+    }
+    
+    while ($true) {
+        $defaultDataLakeStorageAccountName = $defaultDataLakeStorageAccountName.ToLower()
+        $storageInstance = Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $defaultDataLakeStorageAccountName  -ErrorAction SilentlyContinue
+        if ($storageInstance)
+        {
+            break
+        }
+        else {
+            Write-Host $defaultDataLakeStorageAccountName "Storage Name does't exists."
+    
+            $check = Read-Host "Do you want to create a new one with this name? Enter 1 for YES 2 for NO"
+            if ($check -eq 1){
+                break
+            }
+            $defaultDataLakeStorageAccountName = Read-Host "Enter Existing Storage Name"
+        }
+    }
+    
+    while ($true) {
+        $DataFactoryName = $DataFactoryName.ToLower()
+        $adfInstance = Get-AzDataFactoryV2 -ResourceGroupName $resourceGroupName -Name $DataFactoryName  -ErrorAction SilentlyContinue
+        if ($adfInstance){
+            break
+        }
+        else {
+            Write-Host $DataFactoryName "Data Factory Name does't exists."
+    
+            $check = Read-Host "Do you want to create a new one with this name? Enter 1 for YES 2 for NO"
+            if ($check -eq 1){
+                break
+            }
+            $DataFactoryName  = Read-Host "Enter Existing Data Factory Name"
+        }
+    }
+    
+    while ($true) {
+        $workspaceName = $workspaceName.ToLower()
+        $wsInstance = Get-AzSynapseWorkspace -ResourceGroupName $resourceGroupName -Name $workspaceName  -ErrorAction SilentlyContinue
+        if ($wsInstance){
+            break
+        }
+        else {
+            Write-Host $workspaceName "Synapse Analytics Workspace Name does't exists."
+    
+            $check = Read-Host "Do you want to create a new one with this $workspaceName name? Enter 1 for YES 2 for NO"
+            if ($check -eq 1){
+                break
+            }
+            $workspaceName  = Read-Host "Enter Existing Synapse Analytics Workspace Name"
+        }
+    }
+    
+    while ($true) {
+        $sqlpoolName = $sqlpoolName.ToLower()
+        $wspoolInstance = Get-AzSynapseSqlPool -ResourceGroupName $resourceGroupName -WorkspaceName $workspaceName -Name $sqlpoolName -ErrorAction SilentlyContinue
+        if ($wspoolInstance){
+            break
+        }
+        else {
+            Write-Host $sqlpoolName "Synapse Dedicated SQL Pool Name does't exists."
+    
+            $check = Read-Host "Do you want to create a new one with this $sqlpoolName name? Enter 1 for YES 2 for NO"
+            if ($check -eq 1){
+                break
+            }
+            $sqlpoolName  = Read-Host "Enter Existing Synapse Dedicated SQL Pool Name"
+        }
+    }
+   
+}
+else {
+    Write-Host "Enter either 1 or 2"
+}
+
+#Set default variables
+$defaultDataLakeStorageFilesystemName = $resourceGroupName.ToLower()+$getDate+"ws"
+Write-Host "Default Synapse Admin Username is: sqladminuser"
+$sqlAdministratorLoginPassword = Read-Host "Enter Synapse Admin Password" #-assecurestring
+
+    # CREATE Resource Group
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
 
     # CREATE Storage
@@ -136,7 +240,6 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
 
     # CREATE ADF
     Set-AzDataFactoryV2 -ResourceGroupName $resourcegroupname -Name $DataFactoryName -Location $location -Force
-}
 
     Start-Sleep -Seconds 20
 
@@ -153,7 +256,7 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
            "value": "$location"
        },
        "sqlpoolName": {
-           "value": "sqlpool1"
+           "value": "$sqlpoolName"
        },
        "sku": {
            "Value":"DW100c"
