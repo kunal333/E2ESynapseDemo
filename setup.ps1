@@ -1,5 +1,5 @@
 $currentTime = Get-Date
-Write-Host "Script started at" + $currentTime
+Write-Host "Script started time:" + $currentTime
 
 #Connect-AzAccount
 
@@ -18,7 +18,7 @@ if ($resourceCheck -eq 1) {
 
     #Set default variables
     $workspaceName = $resourceGroupName.ToLower()+ $getDate+"ws"
-    $defaultDataLakeStorageAccountName = $resourceGroupName.ToLower() + ((97..122) | Get-Random -Count 1 | % {[char]$_}) # "storage"+$getDate + ((65..90) + (97..122) | Get-Random -Count 1 | % {[char]$_})
+    $defaultDataLakeStorageAccountName = $resourceGroupName.ToLower() + ((97..122) | Get-Random -Count 1 | % {[char]$_})
     $DataFactoryName = $resourceGroupName.ToLower()+ $getDate+"adf"
     $sqlpoolName = "sqlpool1"
 } 
@@ -491,13 +491,15 @@ Function Cleanup
     Remove-Item Parameters*.json
 }
 
-    # Call Functions
-    Get-StorageKey
-    Get-ConnectionString
-    Set-ParametersFile
-    Set-DeployADFARMTemplate
-    Get-CMSData
-    Set-SynapseDDLs
-    Set-LoadSynapseTables
-    Cleanup
-#    Set-ScaleDownSynapse
+# Call Functions
+Get-StorageKey
+Get-ConnectionString
+Set-ParametersFile
+Set-DeployADFARMTemplate
+Get-CMSData
+Set-SynapseDDLs
+Set-LoadSynapseTables
+Cleanup
+
+$currentTime = Get-Date
+Write-Host "Script End time:" + $currentTime
