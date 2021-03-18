@@ -1,7 +1,7 @@
 # Architectures and Useful Images
 
 **Reference Architecture**
-![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/MDW.png)
+![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/MDW.png?raw=true)
 
 **Data Flow Architecture**
 ![Source to Target](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/Source%20to%20Target.png)
