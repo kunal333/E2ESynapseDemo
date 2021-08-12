@@ -2,7 +2,7 @@
 
 **Reference Architecture**
 
-![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/master/images/MDW.png)
+![Reference Architecture](https://github.com/kunal333/E2ESynapseDemo/blob/main/images/MDW.png)
 
 **Data Flow Architecture**
 
